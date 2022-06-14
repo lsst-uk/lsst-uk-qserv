@@ -121,5 +121,5 @@ output "jumpserverfloatingip" {
 }
 
 module "sshconfig" {
-  source = "./sshconfig"
+  source = "./modules/sshconfig"
 }
