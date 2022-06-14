@@ -119,3 +119,7 @@ output "jumpserverip" {
 output "jumpserverfloatingip" {
  value = openstack_networking_floatingip_v2.jump.address
 }
+
+module "sshconfig" {
+  source = "./sshconfig"
+}
