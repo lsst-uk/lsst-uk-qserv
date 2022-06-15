@@ -3,6 +3,6 @@ Host ${jump}
     User ubuntu
     IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
 
-%{ for name in nodes ~}
-Host ${name}
+%{ for index, node in nodes ~}
+Host ${node[index]}
 %{ endfor ~}
