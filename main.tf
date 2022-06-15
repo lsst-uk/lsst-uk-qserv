@@ -84,6 +84,7 @@ resource "openstack_compute_instance_v2" "utility" {
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
   security_groups = var.security_groups
+  count           = 2
   
   network {
     name = var.network
@@ -96,7 +97,8 @@ resource "openstack_compute_instance_v2" "worker" {
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
   security_groups = var.security_groups
-  
+  count           = 1
+
   network {
     name = var.network
   }
