@@ -97,7 +97,7 @@ resource "openstack_compute_instance_v2" "worker" {
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
   security_groups = var.security_groups
-  count           = 1
+  count           = 2
 
   network {
     name = var.network
@@ -131,7 +131,7 @@ data "template_file" "ssh_config" {
     czar = openstack_compute_instance_v2.czar.name
     czar_ip = openstack_compute_instance_v2.czar.access_ip_v4
     
-#    utility = openstack_compute_instance_v2.utility.*.name
+    nodes = openstack_compute_instance_v2.utility.*.name
   }
 }
 
