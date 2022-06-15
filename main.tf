@@ -122,7 +122,13 @@ output "jumpserverfloatingip" {
  value = openstack_networking_floatingip_v2.jump.address
 }
 
-sshconfig = templatefile("./ssh_config.tftpl", {jump = openstack_compute_instance_v2.jump.name, jump_ip = openstack_networking_floatingip_v2.jump.address, key_name = "keypair", czar = openstack_compute_instance_v2.czar.name, czar_ip = openstack_compute_instance_v2.czar.access_ip_v4})
+resource "local_file" "ssh_config" {
+  content = templatefile("./ssh_config.tftpl", {jump = openstack_compute_instance_v2.jump.name, jump_ip = openstack_networking_floatingip_v2.jump.address, key_name = "keypair", czar = openstack_compute_instance_v2.czar.name, czar_ip = openstack_compute_instance_v2.czar.access_ip_v4})
+  filename = "qserv_tf_config"
+}
+
+
+// sshconfig = templatefile("./ssh_config.tftpl", {jump = openstack_compute_instance_v2.jump.name, jump_ip = openstack_networking_floatingip_v2.jump.address, key_name = "keypair", czar = openstack_compute_instance_v2.czar.name, czar_ip = openstack_compute_instance_v2.czar.access_ip_v4})
 
 // data "template_file" "ssh_config" {
 //   template = file("ssh_config.tftpl")
