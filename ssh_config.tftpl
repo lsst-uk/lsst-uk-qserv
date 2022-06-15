@@ -3,12 +3,6 @@ Host ${jump}
     User ubuntu
     IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
 
-Host ${czar}
-    Hostname ${czar_ip}
-    User ubuntu
-    IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
-    proxyjump ${jump}
-
 %{ for name in nodes ~}
 Host ${name}
 %{ endfor ~}
