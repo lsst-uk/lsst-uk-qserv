@@ -31,7 +31,7 @@ variable "security_groups" {
 # Data sources
 ## Get Image ID
 data "openstack_images_image_v2" "image" {
-  name        = "ubuntu-focal" # Name of image to be used
+  name        = "ubuntu-jammy" # Name of image to be used
   most_recent = true
 }
 
