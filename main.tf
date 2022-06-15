@@ -128,6 +128,8 @@ data "template_file" "ssh_config" {
     jump = openstack_compute_instance_v2.jump.name
     jump_ip = openstack_networking_floatingip_v2.jump.address
     key_name = "keypair"
+    node_name = openstack_compute_instance_v2.*.name
+    node_ip = openstack_compute_instance_v2.*.access_ip_v4
   }
 }
 
