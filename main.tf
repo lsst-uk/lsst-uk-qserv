@@ -120,6 +120,16 @@ output "jumpserverfloatingip" {
  value = openstack_networking_floatingip_v2.jump.address
 }
 
-module "sshconfig" {
-  source = "./modules/sshconfig"
+data "template_file" "ssh_config" {
+  template = file("ssh_config.tftpl")
+  vars = {
+    jump = openstack_compute_instance_v2.jump.name
+    jump_ip = openstack_networking_floatingip_v2.jump.address
+    key_name = "keypair"
+  }
+}
+
+resource "local_file" "ssh_config" {
+  content = data.template_file.ssh_config.rendered
+  filename = "qserv_tf_config"
 }
