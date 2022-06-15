@@ -130,7 +130,7 @@ resource "local_file" "ssh_config" {
     key_name = "keypair", 
     czar = openstack_compute_instance_v2.czar.name, 
     czar_ip = openstack_compute_instance_v2.czar.access_ip_v4,
-    nodes = join(openstack_compute_instance_v2.worker.*.name,openstack_compute_instance_v2.utility.*.name)
+    nodes = concat(openstack_compute_instance_v2.worker.*.name,openstack_compute_instance_v2.utility.*.name)
     node_ips = openstack_compute_instance_v2.worker.*.access_ip_v4
   })
   filename = "qserv_tf_config"
