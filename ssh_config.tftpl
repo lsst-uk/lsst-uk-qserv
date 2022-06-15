@@ -8,3 +8,7 @@ Host ${czar}
     User ubuntu
     IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
     proxyjump ${jump}
+
+%{ for name in nodes ~}
+Host ${name}
+%{ endfor ~}
