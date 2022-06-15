@@ -5,6 +5,6 @@ Host ${jump}
 
 %{ for index, node in nodes ~}
 Host ${node}
-    Hostname
+    Hostname ${node_ips[index]}
     proxyjump ${jump}
 %{ endfor ~}
