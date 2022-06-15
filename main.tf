@@ -79,7 +79,7 @@ resource "openstack_compute_instance_v2" "czar" {
 }
 
 resource "openstack_compute_instance_v2" "utility" {
-  name            = "GB-QServ2-Utility"  #Instance name
+  name            = "GB-QServ2-Utility ${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
@@ -92,7 +92,7 @@ resource "openstack_compute_instance_v2" "utility" {
 }
 
 resource "openstack_compute_instance_v2" "worker" {
-  name            = "GB-QServ2-Worker"  #Instance name
+  name            = "GB-QServ2-Worker ${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
@@ -128,8 +128,10 @@ data "template_file" "ssh_config" {
     jump = openstack_compute_instance_v2.jump.name
     jump_ip = openstack_networking_floatingip_v2.jump.address
     key_name = "keypair"
-    node_name = openstack_compute_instance_v2.*.name
-    node_ip = openstack_compute_instance_v2.*.access_ip_v4
+    czar = openstack_compute_instance_v2.czar.name
+    czar_ip = openstack_compute_instance_v2.czar.access_ip_v4
+    
+#    utility = openstack_compute_instance_v2.utility.*.name
   }
 }
 

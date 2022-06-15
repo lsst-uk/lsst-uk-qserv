@@ -3,9 +3,8 @@ Host ${jump}
     User ubuntu
     IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
 
-%{ for index, node in node_name ~}
-Host ${node}
-    Hostname ${node_ip[index]}
+Host ${czar}
+    Hostname ${czar_ip}
     User ubuntu
-    proxyjump $jump
-%{ endfor ~}
+    IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
+    proxyjump ${jump}
