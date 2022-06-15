@@ -4,5 +4,5 @@ Host ${jump}
     IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
 
 %{ for index, node in nodes ~}
-Host ${node[index]}
+Host ${node}
 %{ endfor ~}
