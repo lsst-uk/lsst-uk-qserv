@@ -1,0 +1,8 @@
+---
+- name: Ping test servers
+  hosts: all
+  remote_user: ubuntu
+  tasks:
+  - name: Pinging servers
+    ansible.builtin.ping:
+    
