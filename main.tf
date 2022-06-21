@@ -125,7 +125,10 @@ output "jumpserverfloatingip" {
 resource "local_file" "ansible_hosts" {
   content = templatefile("./ansible_hosts.tftpl",
   {
-    jump = openstack_compute_instance_v2.jump.name
+    jump = openstack_compute_instance_v2.jump.name,
+    czar = openstack_compute_instance_v2.czar.name,
+    workers = openstack_compute_instance_v2.worker.*.name,
+    utilities = openstack_compute_instance_v2.utility.*.name
   })
   filename = "./ansible/ansible_hosts"
 }
