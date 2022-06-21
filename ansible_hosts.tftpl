@@ -1,2 +1,12 @@
 [jumphost]
 ${jump}
+[czar]
+${czar}
+[workers]
+%{ for worker in workers ~}
+${ worker }
+%{ endfor ~}
+[utility nodes]
+%{ for utility in utility_nodes ~}
+${ utility }
+%{ endfor ~}
