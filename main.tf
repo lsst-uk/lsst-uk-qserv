@@ -128,7 +128,7 @@ resource "local_file" "ansible_hosts" {
     jump = openstack_compute_instance_v2.jump.name,
     czar = openstack_compute_instance_v2.czar.name,
     workers = openstack_compute_instance_v2.worker.*.name,
-    utilities = openstack_compute_instance_v2.utility.*.name
+    utility_nodes = openstack_compute_instance_v2.utility.*.name
   })
   filename = "./ansible/ansible_hosts"
 }
