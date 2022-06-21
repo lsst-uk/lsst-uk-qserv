@@ -122,6 +122,14 @@ output "jumpserverfloatingip" {
  value = openstack_networking_floatingip_v2.jump.address
 }
 
+resource "local_file" "ansible_hosts" {
+  content = templatefile("./ansible_hosts.tftpl",
+  {
+    jump = openstack_compute_instance_v2.jump.name
+  })
+  filename = "./ansible/ansible_hosts"
+}
+
 resource "local_file" "ssh_config" {
   content = templatefile("./ssh_config.tftpl", 
   {
