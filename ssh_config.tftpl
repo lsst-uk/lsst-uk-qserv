@@ -7,4 +7,7 @@ Host ${jump}
 Host ${node}
     Hostname ${node_ips[index]}
     proxyjump ${jump}
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gb_somerville_test_key.pem
+    proxyjump ${jump}
 %{ endfor ~}
