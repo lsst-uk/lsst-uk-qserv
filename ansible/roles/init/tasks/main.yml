@@ -1,11 +1,11 @@
 - name: Copy setup scripts
-  template:
+  copy:
     src: "{{ item }}"
     dest: "/home/ubuntu/{{ item }}"
     owner: ubuntu
     group: ubuntu
     mode: '0644'
-  with_items:
+  loop:
     - script1.sh
     - script2.sh
 
