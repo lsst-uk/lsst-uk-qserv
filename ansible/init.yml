@@ -1,0 +1,3 @@
+- hosts: gb-qserv2-jump
+  roles:
+    - init
