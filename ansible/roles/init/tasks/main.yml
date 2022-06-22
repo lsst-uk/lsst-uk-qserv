@@ -9,3 +9,8 @@
     - script1.sh
     - script2.sh
 
+- name: Run Shell Script 1.
+  shell: sh /home/ubuntu/script1.sh
+
+- name: Run Shell Script 2.
+   shell: sh /home/ubuntu/script1.sh
