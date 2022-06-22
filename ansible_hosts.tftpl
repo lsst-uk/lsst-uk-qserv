@@ -1,19 +1,19 @@
 jumphost:
   hosts:
-    ${jump}
+    ${jump}:
 
 czar:
   hosts:
-    ${czar}
+    ${czar}:
 
 workers:
   hosts:
 %{ for worker in workers ~}
-    ${ worker }
+    ${ worker }:
 %{ endfor ~}
 
 utility nodes:
   hosts:
 %{ for utility in utility_nodes ~}
-    ${ utility }
+    ${ utility }:
 %{ endfor ~}
