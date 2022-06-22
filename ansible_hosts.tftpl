@@ -1,15 +1,19 @@
-[jumphost]
-${jump}
+jumphost:
+  hosts:
+    ${jump}
 
-[czar]
-${czar}
+czar:
+  hosts:
+    ${czar}
 
-[workers]
+workers:
+  hosts:
 %{ for worker in workers ~}
-${ worker }
+    ${ worker }
 %{ endfor ~}
 
-[utility nodes]
+utility nodes:
+  hosts:
 %{ for utility in utility_nodes ~}
-${ utility }
+    ${ utility }
 %{ endfor ~}
