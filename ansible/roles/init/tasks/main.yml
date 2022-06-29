@@ -22,10 +22,12 @@
     dest: /etc/modules-load.d/containerd.conf
 
 - modprobe:
+    become: yes
     name: overlay
     state: present
 
 - modprobe:
+    become: yes
     name: br_netfilter
     state: present
 
