@@ -43,8 +43,44 @@
   become: yes
   shell: sysctl --system
 
-- name: update apt cache
+- name: apt-get update
   become: yes
   apt:
     update_cache: yes
     cache_valid_time: 3600
+
+- name: apt-get upgrade
+  become: yes
+  apt:
+    upgrade: dist
+
+- name: apt-get install apt-transport-https
+  become: yes
+  apt:
+    name: apt-transport-https
+    state: latest
+
+- name: apt-get install ca-certificates
+  become: yes
+  apt:
+    name: ca-certificates
+    state: latest
+
+- name: apt-get install curl
+  become: yes
+  apt:
+    name: curl
+    state: latest
+
+- name: apt-get install gnupg
+  become: yes
+  apt:
+    name: gnupg
+    state: latest
+
+- name: apt-get install lsb-release
+  become: yes
+  apt:
+    name: lsb-release
+    state: latest
+
