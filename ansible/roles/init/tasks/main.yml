@@ -21,6 +21,14 @@
     src: containerd.conf
     dest: /etc/modules-load.d/containerd.conf
 
+- modprobe:
+    name: overlay
+    state: present
+
+- modprobe:
+    name: br_netfilter
+    state: present
+
 - name: Copy 99-kubernetes-cri.conf to hosts
   become: yes
   template:
