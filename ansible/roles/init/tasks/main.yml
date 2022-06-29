@@ -38,3 +38,7 @@
   template:
     src: 99-kubernetes-cri.conf
     dest: /etc/sysctl.d/99-kubernetes-cri.conf
+
+- name: sysctl read values from all system directories
+  become: yes
+  shell: sysctl --system
