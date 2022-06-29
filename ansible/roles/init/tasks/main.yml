@@ -85,7 +85,7 @@
     state: latest
 
 - name: Get Docker's official GPG key
-  become:
+  become: yes
   get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.gpg
