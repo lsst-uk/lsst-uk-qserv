@@ -44,6 +44,7 @@
   shell: sysctl --system
 
 - name: update apt cache
+  become: yes
   apt:
     update_cache: yes
     cache_valid_time: 3600
