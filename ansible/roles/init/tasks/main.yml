@@ -42,3 +42,8 @@
 - name: sysctl read values from all system directories
   become: yes
   shell: sysctl --system
+
+- name: update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
