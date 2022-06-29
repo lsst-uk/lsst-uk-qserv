@@ -30,7 +30,6 @@
 - name: Add br_netfilter module
   become: yes
   modprobe:
-    become: yes
     name: br_netfilter
     state: present
 
