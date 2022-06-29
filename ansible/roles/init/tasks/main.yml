@@ -88,8 +88,13 @@
   become: yes
   get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    #dest: /home/ubuntu/docker.gpg
     dest: /etc/apt/keyrings/docker.gpg
+    mode: '0644'
+    force: true
+
+- name: De-armor dcoker gpg key
+  become: yes
+  shell: 'gpg --dearmor /etc/apt/keyrings/docker.gpg'
 
 - name: Add Docker apt repository
   apt_repository:
