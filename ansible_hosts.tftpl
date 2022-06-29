@@ -12,7 +12,7 @@ workers:
     ${ worker }:
 %{ endfor ~}
 
-utility nodes:
+utility_nodes:
   hosts:
 %{ for utility in utility_nodes ~}
     ${ utility }:
