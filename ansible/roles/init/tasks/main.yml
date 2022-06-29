@@ -21,12 +21,15 @@
     src: containerd.conf
     dest: /etc/modules-load.d/containerd.conf
 
-- modprobe:
-    become: yes
+- name: Add overlay module
+  become: yes
+  modprobe:
     name: overlay
     state: present
 
-- modprobe:
+- name: Add br_netfilter module
+  become: yes
+  modprobe:
     become: yes
     name: br_netfilter
     state: present
