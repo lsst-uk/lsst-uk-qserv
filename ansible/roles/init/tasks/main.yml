@@ -84,3 +84,8 @@
     name: lsb-release
     state: latest
 
+- name: Add Docker's official GPG key
+  become:
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
