@@ -88,7 +88,8 @@
   become: yes
   get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /etc/apt/keyrings/docker.gpg
+    dest: /home/ubuntu/docker.gpg
+    #dest: /etc/apt/keyrings/docker.gpg
 
 - name: Add Docker apt repository
   apt_repository:
