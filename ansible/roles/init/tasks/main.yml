@@ -111,7 +111,7 @@
   tags:
     - docker
 
--name: Verify Docker gpg key with fingerprint
+- name: Verify Docker gpg key with fingerprint
   apt_key:
     id: 0EBFCD88
     state: present
