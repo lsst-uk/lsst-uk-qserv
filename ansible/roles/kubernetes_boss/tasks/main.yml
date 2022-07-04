@@ -1,6 +1,8 @@
 - name: kubeadm init
   become: yes
   shell: "kubeadm init"
+  async: 120
+  poll: 10
   register: init_output
   tags:
   - kube-setup
