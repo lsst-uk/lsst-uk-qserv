@@ -130,4 +130,16 @@
   become: yes
   file: 
     path: /etc/containerd
+    state: directory
 
+- name: setup default containerd config
+  become: yes
+  shell: 'containerd config default | sudo tee /etc/containerd/config.toml'
+  tags:
+    - docker
+
+- name: restart containerd
+  become: yes
+  service: name=containerd state=restarted
+  tags:
+    - docker
