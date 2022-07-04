@@ -1,0 +1,127 @@
+# - name: Copy setup scripts
+#   copy:
+#     src: "{{ item }}"
+#     dest: "/home/ubuntu/{{ item }}"
+#     owner: ubuntu
+#     group: ubuntu
+#     mode: '0644'
+#   loop:
+#     - script1.sh
+#     - script2.sh
+
+# - name: Run Shell Script 1.
+#   shell: sh /home/ubuntu/script1.sh
+
+# - name: Run Shell Script 2.
+#    shell: sh /home/ubuntu/script1.sh
+
+- name: Copy containerd.conf to hosts
+  become: yes
+  template:
+    src: containerd.conf
+    dest: /etc/modules-load.d/containerd.conf
+
+- name: Add overlay module
+  become: yes
+  modprobe:
+    name: overlay
+    state: present
+
+- name: Add br_netfilter module
+  become: yes
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Copy 99-kubernetes-cri.conf to hosts
+  become: yes
+  template:
+    src: 99-kubernetes-cri.conf
+    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+
+- name: sysctl read values from all system directories
+  become: yes
+  shell: sysctl --system
+
+- name: apt-get update
+  become: yes
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - docker
+
+- name: apt-get upgrade
+  become: yes
+  apt:
+    upgrade: dist
+
+- name: apt-get install apt-transport-https
+  become: yes
+  apt:
+    name: apt-transport-https
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install ca-certificates
+  become: yes
+  apt:
+    name: ca-certificates
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install curl
+  become: yes
+  apt:
+    name: curl
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install gnupg
+  become: yes
+  apt:
+    name: gnupg
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install lsb-release
+  become: yes
+  apt:
+    name: lsb-release
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install software-properties-common
+  become: yes
+  apt:
+    name: software-properties-common
+    state: latest
+  tags:
+    - docker
+
+- name: Add Docker's GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  tags:
+    - docker
+
+- name: Verify Docker gpg key with fingerprint
+  apt_key:
+    id: 0EBFCD88
+    state: present
+  tags:
+    - docker
+
+- name: Configure Docker for ubuntu stable repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    state: present
+    update_cache: yes
+  tags:
+    - docker  
