@@ -1,9 +1,23 @@
-- name: kubeadm init
+# - name: kubeadm init
+#   become: yes
+#   shell: "kubeadm init"
+#   register: init_output
+#   tags:
+#   - kube-setup
+
+- name: create /home/ubuntu/.kube
   become: yes
-  shell: kubeadm init
-  register: init_output
-  until: init_output.stdout.find("Your Kubernetes master has initialized successfully!") != -1
+  file: 
+    path: /home/ubuntu/.kube
+    state: directory
   tags:
   - kube-setup
 
-  
+- name: copy kubernetes admin.conf
+  become: yes
+  copy:
+    remote_src: yes
+    src: /etc/kubernetes/admin.conf
+    dest: /home/ubuntu/.kube/config
+    owner: ubuntu
+    group: ubuntu
