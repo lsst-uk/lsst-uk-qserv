@@ -106,7 +106,7 @@
 
 - name: De-armor docker gpg key
   become: yes
-  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker-archive-keyring.gpg --yes'
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
   tags:
     - docker
 
