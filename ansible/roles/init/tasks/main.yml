@@ -172,3 +172,9 @@
   tags:
     - kubernetes      
     
+- name: initialise kubernetes
+  hosts: jumphost
+  become: yes
+  shell: 'echo "test"'
+  tags:
+    - kubernetes
