@@ -94,9 +94,10 @@
 
 - name: De-armor docker gpg key
   become: yes
-  shell: 'sudo gpg --dearmor -o --yes /etc/apt/keyrings/docker.gpg'
+  shell: 'gpg --dearmor -o --yes /etc/apt/keyrings/docker.gpg'
 
 - name: Add Docker apt repository
+  become: yes
   apt_repository:
     filename: docker
     repo: 'deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable'
