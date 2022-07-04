@@ -143,3 +143,30 @@
   service: name=containerd state=restarted
   tags:
     - docker
+
+- name: get kubernetes gpg key
+  become: yes
+  shell: 'curl -fsSL /etc/apt/keyrings/kubernetes.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg'
+  tags:
+    - kubernetes
+
+- name: Add kubernetes apt repository
+  become: yes
+  apt_repository:
+    filename: kubernetes
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+  tags:
+    - kubernetes  
+
+- name: apt-get kubernetes
+  become: yes
+  apt:
+    pkg:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - ipvsadm
+  tags:
+    - kubernetes      
+    
