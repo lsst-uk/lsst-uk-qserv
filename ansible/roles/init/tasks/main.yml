@@ -48,8 +48,6 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
-  tags:
-    - docker
 
 - name: apt-get upgrade
   become: yes
@@ -61,67 +59,45 @@
   apt:
     name: apt-transport-https
     state: latest
-  tags:
-    - docker
 
 - name: apt-get install ca-certificates
   become: yes
   apt:
     name: ca-certificates
     state: latest
-  tags:
-    - docker
 
 - name: apt-get install curl
   become: yes
   apt:
     name: curl
     state: latest
-  tags:
-    - docker
 
 - name: apt-get install gnupg
   become: yes
   apt:
     name: gnupg
     state: latest
-  tags:
-    - docker
 
 - name: apt-get install lsb-release
   become: yes
   apt:
     name: lsb-release
     state: latest
-  tags:
-    - docker
 
-- name: apt-get install software-properties-common
+- name: Get Docker's official GPG key
   become: yes
-  apt:
-    name: software-properties-common
-    state: latest
-  tags:
-    - docker
-
-- name: Add Docker's GPG key
-  apt_key:
+  get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-  tags:
-    - docker
+    dest: /etc/apt/keyrings/docker.gpg
+    mode: '0644'
+    force: true
 
--name: Verify Docker gpg key with fingerprint
-  apt_key:
-    id: 0EBFCD88
-    state: present
-  tags:
-    - docker
+- name: De-armor docker gpg key
+  become: yes
+  shell: 'gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
 
-- name: Configure Docker for ubuntu stable repository
+- name: Add Docker apt repository
+  become: yes
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
-    state: present
-    update_cache: yes
-  tags:
-    - docker  
+    filename: docker
+    repo: 'deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable'
