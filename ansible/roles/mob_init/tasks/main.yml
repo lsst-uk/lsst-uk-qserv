@@ -1,0 +1,156 @@
+- name: Copy containerd.conf to hosts
+  become: yes
+  template:
+    src: containerd.conf
+    dest: /etc/modules-load.d/containerd.conf
+
+- name: Add overlay module
+  become: yes
+  modprobe:
+    name: overlay
+    state: present
+
+- name: Add br_netfilter module
+  become: yes
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Copy 99-kubernetes-cri.conf to hosts
+  become: yes
+  template:
+    src: 99-kubernetes-cri.conf
+    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+
+- name: sysctl read values from all system directories
+  become: yes
+  shell: sysctl --system
+
+- name: De-armor docker gpg key
+  become: yes
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
+  tags:
+    - docker
+
+- name: Add Docker apt repository
+  become: yes
+  apt_repository:
+    filename: docker
+    repo: "deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+    state: present
+  tags:
+    - docker  
+
+- name: apt-get update
+  become: yes
+  apt:
+    update_cache: yes
+  tags:
+    - docker
+
+- name: apt-get upgrade
+  become: yes
+  apt:
+    upgrade: dist
+
+- name: apt-get install apt-transport-https
+  become: yes
+  apt:
+    name: apt-transport-https
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install ca-certificates
+  become: yes
+  apt:
+    name: ca-certificates
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install curl
+  become: yes
+  apt:
+    name: curl
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install gnupg
+  become: yes
+  apt:
+    name: gnupg
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install lsb-release
+  become: yes
+  apt:
+    name: lsb-release
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install software-properties-common
+  become: yes
+  apt:
+    name: software-properties-common
+    state: latest
+  tags:
+    - docker
+
+- name: apt-get install containerd.io
+  become: yes
+  apt:
+    name: containerd.io
+    state: latest
+  tags:
+    - docker
+
+- name: create /etc/containerd
+  become: yes
+  file: 
+    path: /etc/containerd
+    state: directory
+
+- name: setup default containerd config
+  become: yes
+  shell: 'containerd config default | sudo tee /etc/containerd/config.toml'
+  tags:
+    - docker
+
+- name: restart containerd
+  become: yes
+  service: name=containerd state=restarted
+  tags:
+    - docker
+
+- name: get kubernetes gpg key
+  become: yes
+  get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /etc/apt/keyrings/kubernetes.gpg
+  tags:
+    - kubernetes
+
+- name: Add kubernetes apt repository
+  become: yes
+  apt_repository:
+    filename: kubernetes
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
+    state: present
+  tags:
+    - kubernetes  
+
+- name: apt-get kubernetes
+  become: yes
+  apt:
+    pkg:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - ipvsadm
+  tags:
+    - kubernetes      
