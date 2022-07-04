@@ -1,6 +1,6 @@
 - name: kubeadm init
   become: yes
-  shell: sudo kubeadm init"
+  shell: "sudo kubeadm init"
   register: init_output
   until: init_output.stdout.find("Your Kubernetes master has initialized successfully!") != -1
   tags:
