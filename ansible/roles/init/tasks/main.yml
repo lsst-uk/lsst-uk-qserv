@@ -148,7 +148,7 @@
   become: yes
   get_url:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: curl -fsSL /etc/apt/keyrings/kubernetes.gpg
+    dest: /etc/apt/keyrings/kubernetes.gpg
   tags:
     - kubernetes
 
