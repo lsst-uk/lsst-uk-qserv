@@ -21,3 +21,5 @@
     dest: /home/ubuntu/.kube/config
     owner: ubuntu
     group: ubuntu
+  tags:
+  - kube-setup
