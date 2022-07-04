@@ -1,9 +1,9 @@
-# - name: kubeadm init
-#   become: yes
-#   shell: "kubeadm init"
-#   register: init_output
-#   tags:
-#   - kube-setup
+- name: kubeadm init
+  become: yes
+  shell: "kubeadm init"
+  register: init_output
+  tags:
+  - kube-setup
 
 - name: create /home/ubuntu/.kube
   become: yes
@@ -21,5 +21,10 @@
     dest: /home/ubuntu/.kube/config
     owner: ubuntu
     group: ubuntu
+  tags:
+  - kube-setup
+
+- name: kubeadm network setup
+  shell: """kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')""""
   tags:
   - kube-setup
