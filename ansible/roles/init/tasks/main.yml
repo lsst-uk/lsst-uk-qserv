@@ -92,9 +92,9 @@
     mode: '0644'
     force: true
 
-- name: De-armor dcoker gpg key
+- name: De-armor docker gpg key
   become: yes
-  shell: 'gpg --dearmor /etc/apt/keyrings/docker.gpg'
+  shell: 'sudo gpg --dearmor -o --yes /etc/apt/keyrings/docker.gpg'
 
 - name: Add Docker apt repository
   apt_repository:
