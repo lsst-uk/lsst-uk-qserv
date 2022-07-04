@@ -94,7 +94,7 @@
 
 - name: De-armor docker gpg key
   become: yes
-  shell: 'gpg --dearmor -o /etc/apt/keyrings/docker.gpg' --yes
+  shell: 'gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
 
 - name: Add Docker apt repository
   become: yes
