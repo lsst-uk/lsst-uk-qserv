@@ -1,0 +1,11 @@
+- name: kubeadm init
+  become: yes
+  shell: "kubeadm init"
+  register: init_output
+  until: init_output.stdout.find("Your Kubernetes master has initialized successfully!") != -1
+  retries: 1
+  delay: 20
+  tags:
+  - kube-setup
+
+  
