@@ -45,8 +45,8 @@
 
 - name: De-armor docker gpg key
   become: yes
-  warn: false
   shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
+    warn: false
   tags:
     - docker
 
