@@ -104,24 +104,17 @@
   tags:
     - docker
 
-- name: Add Docker's GPG key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+- name: De-armor docker gpg key
+  become: yes
+  shell: 'gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
   tags:
     - docker
 
-- name: Verify Docker gpg key with fingerprint
-  apt_key:
-    id: 0EBFCD88
-    state: present
-  tags:
-    - docker
-
-- name: Configure Docker for ubuntu stable repository
+- name: Add Docker apt repository
+  become: yes
   apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
-    state: present
-    update_cache: yes
+    filename: docker
+    repo: 'deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable'
+
   tags:
     - docker  
