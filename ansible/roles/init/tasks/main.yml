@@ -43,11 +43,26 @@
   become: yes
   shell: sysctl --system
 
+- name: De-armor docker gpg key
+  become: yes
+  warn: false
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
+  tags:
+    - docker
+
+- name: Add Docker apt repository
+  become: yes
+  apt_repository:
+    filename: docker
+    repo: "deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+    state: present
+  tags:
+    - docker  
+
 - name: apt-get update
   become: yes
   apt:
     update_cache: yes
-    cache_valid_time: 3600
   tags:
     - docker
 
@@ -104,17 +119,16 @@
   tags:
     - docker
 
-- name: De-armor docker gpg key
+- name: apt-get install containerd.io
   become: yes
-  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
+  apt:
+    name: containerd.io
+    state: latest
   tags:
     - docker
 
-- name: Add Docker apt repository
+- name: create /etc/containerd
   become: yes
-  apt_repository:
-    filename: docker
-    repo: "deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
-    state: present
-  tags:
-    - docker  
+  file: 
+    path: /etc/containerd
+
