@@ -32,6 +32,11 @@
   tags:
   - kube-setup
 
+- name: delay
+  wait_for:
+    timeout: 60
+  delegate_to: localhost
+
 - name: kubeadm network setup
   shell: 
     cmd: |
