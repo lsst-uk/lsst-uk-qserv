@@ -1,5 +1,6 @@
 - name: kubeadm init
   become: yes
+  creates: /etc/kubernetes/admin.conf
   shell: "kubeadm init"
   async: 240
   poll: 20
