@@ -7,6 +7,12 @@
   tags:
   - kube-setup
 
+- name: print init_output
+  debug:
+    var: init_output
+  tags:
+  - kube-setup
+
 - name: create /home/ubuntu/.kube
   become: yes
   file: 
