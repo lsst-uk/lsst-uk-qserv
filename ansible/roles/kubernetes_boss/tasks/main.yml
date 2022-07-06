@@ -38,6 +38,8 @@
   wait_for:
     timeout: 60
   delegate_to: localhost
+  tags:
+  - kube-setup
 
 - name: kubeadm network setup
   shell: 
@@ -53,6 +55,10 @@
     cmd: |
       kubeadm token create --print-join-command
   register: join_command
+  tags:
+  - kube-setup
 
 - name: Copy join command to local file
   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+  tags:
+  - kube-setup  
