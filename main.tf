@@ -138,7 +138,7 @@ resource "local_file" "ssh_config" {
   {
     jump = openstack_compute_instance_v2.jump.name, 
     jump_ip = openstack_networking_floatingip_v2.jump.address, 
-    key_name = "keypair", 
+    key_name = var.keypair, 
     nodes = concat(openstack_compute_instance_v2.czar.*.name,openstack_compute_instance_v2.worker.*.name,openstack_compute_instance_v2.utility.*.name)
     node_ips = concat(openstack_compute_instance_v2.czar.*.access_ip_v4,openstack_compute_instance_v2.worker.*.access_ip_v4,openstack_compute_instance_v2.utility.*.access_ip_v4)
 
