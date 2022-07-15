@@ -2,6 +2,10 @@ jumphost:
   hosts:
     ${jump}:
 
+boss:
+  hosts:
+    ${jump}:
+
 czar:
   hosts:
     ${czar}:
@@ -17,3 +21,13 @@ utility_nodes:
 %{ for utility in utility_nodes ~}
     ${ utility }:
 %{ endfor ~}
+
+goons:
+  hosts:
+    ${czar}
+%{ for worker in workers ~}
+    ${ worker }:
+%{ endfor ~}
+%{ for utility in utility_nodes ~}
+    ${ utility }:
+%{ endfor ~}    
