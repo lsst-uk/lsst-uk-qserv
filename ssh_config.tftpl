@@ -1,13 +1,13 @@
 Host ${jump}
     Hostname ${jump_ip}
     User ubuntu
-    IdentityFile ~/.ssh/keys/${key_name}
+    IdentityFile ~/.ssh/keys/${key_name}.pem
 
 %{ for index, node in nodes ~}
 Host "${node}"
     Hostname ${node_ips[index]}
     proxyjump ${jump}
     User ubuntu
-    IdentityFile ~/.ssh/keys/${key_name}
+    IdentityFile ~/.ssh/keys/${key_name}.pem
     proxyjump ${jump}
 %{ endfor ~}
