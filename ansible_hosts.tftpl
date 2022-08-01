@@ -24,7 +24,7 @@ utility_nodes:
 
 goons:
   hosts:
-    ${czar}
+    ${czar}:
 %{ for worker in workers ~}
     ${ worker }:
 %{ endfor ~}

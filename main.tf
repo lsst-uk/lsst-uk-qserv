@@ -15,7 +15,7 @@ provider "openstack" {
 # Variables
 variable "keypair" {
   type    = string
-  default = "gb_somerville_test_key"   # name of keypair created
+  default = "gblow-qserv"   # name of keypair created
 }
 
 variable "network" {
