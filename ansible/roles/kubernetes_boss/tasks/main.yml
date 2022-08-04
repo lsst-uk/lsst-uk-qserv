@@ -80,7 +80,9 @@
   - kube-setup  
 
 - name: Get uptime information
-  ansible.builtin.shell: /usr/bin/uptime
+  shell: 
+    cmd: |
+      /usr/bin/uptime
   register: result
   tags:
   - kube-setup
