@@ -2,6 +2,10 @@
   roles:
     - mob_init
 
-- hosts: jumphost
+- hosts: boss
   roles:
     - kubernetes_boss
+
+- hosts: goons
+  roles:
+    - kubernetes_goon
