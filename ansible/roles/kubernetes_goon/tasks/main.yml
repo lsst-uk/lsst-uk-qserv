@@ -2,3 +2,5 @@
   debug:
     var: hostvars[inventory_hostname]
     verbosity: 4
+  tags:
+  - kube-setup
