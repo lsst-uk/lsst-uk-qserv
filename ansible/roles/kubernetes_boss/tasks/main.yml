@@ -79,8 +79,6 @@
   tags:
   - kube-setup  
 
-#tests
-
 - name: Get uptime information
   ansible.builtin.shell: /usr/bin/uptime
   register: result
