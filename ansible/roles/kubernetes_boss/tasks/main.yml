@@ -78,3 +78,15 @@
   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
   tags:
   - kube-setup  
+
+#tests
+
+- name: Get uptime information
+  ansible.builtin.shell: /usr/bin/uptime
+  register: result
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: result
+    verbosity: 2
+
