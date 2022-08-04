@@ -69,7 +69,6 @@
 - name: Display all variables/facts known for a host
   debug:
     var: hostvars[inventory_hostname]
-    verbosity: 4
   tags:
   - kube-setup
 
@@ -90,6 +89,5 @@
 - name: Print return information from the previous task
   ansible.builtin.debug:
     var: result
-    verbosity: 2
   tags:
   - kube-setup
