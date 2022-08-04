@@ -84,9 +84,12 @@
 - name: Get uptime information
   ansible.builtin.shell: /usr/bin/uptime
   register: result
+  tags:
+  - kube-setup
 
 - name: Print return information from the previous task
   ansible.builtin.debug:
     var: result
     verbosity: 2
-
+  tags:
+  - kube-setup
