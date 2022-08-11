@@ -71,7 +71,7 @@ resource "openstack_compute_instance_v2" "czar" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
-  security_groups = var.security_groups
+  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
   
   network {
     name = var.network
