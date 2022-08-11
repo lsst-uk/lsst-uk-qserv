@@ -59,7 +59,7 @@ resource "openstack_compute_instance_v2" "jump" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
-  security_groups = var.security_groups
+  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
 
   network {
     name = var.network
@@ -71,7 +71,7 @@ resource "openstack_compute_instance_v2" "czar" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
-  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
+  security_groups = ["qserv-kube-sg"]
   
   network {
     name = var.network
@@ -83,7 +83,7 @@ resource "openstack_compute_instance_v2" "utility" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
-  security_groups = var.security_groups
+  security_groups = ["qserv-kube-sg"]
   count           = 1
   
   network {
@@ -96,7 +96,7 @@ resource "openstack_compute_instance_v2" "worker" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
-  security_groups = var.security_groups
+  security_groups = ["qserv-kube-sg"]
   count           = 2
 
   network {
