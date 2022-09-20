@@ -22,12 +22,6 @@
       tags:
       - ssh-setup
 
-    - name: Display all variables/facts known for a host
-      debug:
-        var: join_command_fact
-      tags:
-      - kube-setup
-
 - hosts: goons
   tasks:
     

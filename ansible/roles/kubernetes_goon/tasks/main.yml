@@ -1,5 +1,13 @@
-- name: Display all variables/facts known for a host
-  debug:
-    var: join_command_fact
+- name: Test reading of join-command
+  ansible.builtin.debug:
+    msg: "kubeadm join {{lookup('ansible.builtin.file', '/tmp/qserv_tmp/join-command') }}"
+    verbosity: 1
+  tags:
+  - kube-setup
+
+- name: Join nodes to kubernetes cluster
+  become: yes
+  ansible.builtin.shell:
+    cmd: "kubeadm join {{lookup('ansible.builtin.file', '/tmp/qserv_tmp/join-command') }}"
   tags:
   - kube-setup
