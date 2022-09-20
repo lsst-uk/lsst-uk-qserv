@@ -2,16 +2,25 @@
   roles:
     - mob_init
 
+
+
 - hosts: boss
   roles:
     - kubernetes_boss
   tasks:
-    - name: Setjoin command as fact
-      ansible.builtin.set_fact:
-        join_command_fact: "{{ join_command.stdout_lines[0] }}"
-        cacheable: yes
+    
+    - name: ssh-keygen
+      community.crypto.openssh_keypair:
+        path: /home/ubuntu/.ssh/jump_id_ssh_rsa
       tags:
-      - kube-setup
+      - ssh-setup
+
+    - name: fetch ssh public key
+      ansible.builtin.fetch:
+        src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub
+        dest: /tmp/qserv_tmp/ssh-keys
+      tags:
+      - ssh-setup
 
     - name: Display all variables/facts known for a host
       debug:
@@ -19,26 +28,16 @@
       tags:
       - kube-setup
 
-
-    - name: Copy join command to local file
-      local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+- hosts: goons
+  tasks:
+    
+    - name: deploy jump host ssh key
+      ansible.posix.authorized_key:
+        user: ubuntu
+        state: present
+        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/gb-qserv2-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
       tags:
-      - kube-setup  
-
-    - name: Get uptime information
-      shell: 
-        cmd: |
-          /usr/bin/uptime
-      register: result
-      tags:
-      - kube-setup
-
-    - name: Print return information from the previous task
-      ansible.builtin.debug:
-        var: result
-      tags:
-      - kube-setup
-
+      - ssh-setup
 
 - hosts: goons
   roles:

@@ -1,1 +1,4 @@
 qserv_tf_config
+ansible/join-command
+terraform.tfstate
+terraform.tfstate.backup
