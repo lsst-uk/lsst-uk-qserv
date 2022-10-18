@@ -34,21 +34,21 @@
   tags:
   - kube-setup
 
-- name: delay
-  wait_for:
-    timeout: 60
-  delegate_to: localhost
-  tags:
-  - kube-setup
+#- name: delay
+#  wait_for:
+#    timeout: 60
+#  delegate_to: localhost
+#  tags:
+#  - kube-setup
 
-- name: kubeadm network setup
-  shell: 
-    cmd: |
-      kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
-  async: 240
-  poll: 30
-  tags:
-  - kube-setup
+#- name: kubeadm network setup
+#  shell: 
+#    cmd: |
+#      kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+#  async: 240
+#  poll: 30
+#  tags:
+#  - kube-setup
 
 - name: Generate join command
   shell: 
