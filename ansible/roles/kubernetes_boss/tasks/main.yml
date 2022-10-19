@@ -57,6 +57,7 @@
   register: join_command
   tags:
   - kube-setup
+  - kube-join
 
 - name: Setjoin command as fact
   ansible.builtin.set_fact:
@@ -65,6 +66,7 @@
     delegate_to: boss
   tags:
   - kube-setup
+  - kube-join
 
 - name: Display join_command_fact
   debug: 
@@ -72,8 +74,10 @@
     verbosity: 1
   tags:
   - kube-setup
+  - kube-join
 
 - name: Copy join command to local file
   local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/tmp/qserv_tmp/join-command"
   tags:
   - kube-setup  
+  - kube-join
