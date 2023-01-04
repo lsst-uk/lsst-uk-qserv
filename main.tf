@@ -20,7 +20,7 @@ variable "keypair" {
 
 variable "network" {
   type    = string
-  default = "qserv" # default network to be used
+  default = "default" # default network to be used
 }
 
 variable "security_groups" {
