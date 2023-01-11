@@ -8,8 +8,8 @@
 
 - name: Join nodes to kubernetes cluster
   become: yes
-  ansible.builtin.shell:
-    cmd: "kubeadm join {{lookup('ansible.builtin.file', '/tmp/qserv_tmp/join-command') }}"
+  shell:
+    cmd: "{{lookup('ansible.builtin.file', '/tmp/qserv_tmp/join-command') }}"
   tags:
   - kube-setup
   - kube-join
