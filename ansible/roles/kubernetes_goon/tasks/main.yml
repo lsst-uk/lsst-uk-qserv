@@ -13,3 +13,21 @@
   tags:
   - kube-setup
   - kube-join
+
+- name: Setup qserv directory
+  file:
+    path: /qserv-data/default/qserv
+  tags:
+  - qserv-setup
+
+- name: Setup ingest directory
+  file:
+    path: /qserv-data/default/ingest
+  tags:
+  - qserv-setup
+
+- name: Setup replication directory
+  file:
+    path: /qserv-data/default/replication
+  tags:
+  - qserv-setup
