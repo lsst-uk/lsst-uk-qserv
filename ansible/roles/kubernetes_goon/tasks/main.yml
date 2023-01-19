@@ -14,6 +14,16 @@
   - kube-setup
   - kube-join
 
+- name: Setup qserv-data root directory
+  file:
+    path: /qserv-data/default/qserv
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+  - qserv-setup
+
 - name: Setup qserv directory
   file:
     path: /qserv-data/default/qserv
