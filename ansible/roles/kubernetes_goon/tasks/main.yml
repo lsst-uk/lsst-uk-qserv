@@ -16,7 +16,7 @@
 
 - name: Setup qserv-data root directory
   file:
-    path: /qserv-data/default/qserv
+    path: /qserv-data
     state: directory
     owner: root
     group: root
