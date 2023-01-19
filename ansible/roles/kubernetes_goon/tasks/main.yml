@@ -23,6 +23,7 @@
     mode: 0755
   tags:
   - qserv-setup
+  become: yes
 
 - name: Setup qserv directory
   file:
@@ -32,6 +33,7 @@
     group: ubuntu
   tags:
   - qserv-setup
+  become: yes
 
 - name: Setup ingest directory
   file:
@@ -41,6 +43,7 @@
     group: ubuntu
   tags:
   - qserv-setup
+  become: yes
 
 - name: Setup replication directory
   file:
@@ -50,3 +53,4 @@
     group: ubuntu
   tags:
   - qserv-setup
+  become: yes
