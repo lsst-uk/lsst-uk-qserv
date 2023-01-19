@@ -17,17 +17,20 @@
 - name: Setup qserv directory
   file:
     path: /qserv-data/default/qserv
+    state: directory
   tags:
   - qserv-setup
 
 - name: Setup ingest directory
   file:
     path: /qserv-data/default/ingest
+    state: directory
   tags:
   - qserv-setup
 
 - name: Setup replication directory
   file:
     path: /qserv-data/default/replication
+    state: directory
   tags:
   - qserv-setup
