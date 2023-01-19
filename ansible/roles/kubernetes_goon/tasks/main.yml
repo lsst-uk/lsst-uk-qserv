@@ -16,7 +16,7 @@
 
 - name: Setup qserv directory
   file:
-    path: /qserv-data
+    path: /qserv-data/default/qserv
     state: directory
     owner: ubuntu
     group: ubuntu
