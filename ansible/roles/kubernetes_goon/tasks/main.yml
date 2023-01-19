@@ -18,8 +18,7 @@
   file:
     path: /qserv-data
     state: directory
-    owner: ubuntu
-    group: ubuntu
+    become: yes
   tags:
   - qserv-setup
 
@@ -27,8 +26,7 @@
   file:
     path: /qserv-data/default/ingest
     state: directory
-    owner: ubuntu
-    group: ubuntu
+    become: yes
   tags:
   - qserv-setup
 
@@ -36,7 +34,6 @@
   file:
     path: /qserv-data/default/replication
     state: directory
-    owner: ubuntu
-    group: ubuntu
+    become: yes
   tags:
   - qserv-setup
