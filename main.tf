@@ -77,6 +77,7 @@ resource "openstack_compute_instance_v2" "czar" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
+  availability_zone_hints = var.availability-zone
   security_groups = ["qserv-kube-sg"]
   
   network {
@@ -89,6 +90,7 @@ resource "openstack_compute_instance_v2" "utility" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
+  availability_zone_hints = var.availability-zone
   security_groups = ["qserv-kube-sg"]
   count           = 1
   
@@ -102,6 +104,7 @@ resource "openstack_compute_instance_v2" "worker" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
+  availability_zone_hints = var.availability-zone
   security_groups = ["qserv-kube-sg"]
   count           = 2
 
