@@ -18,6 +18,11 @@ variable "keypair" {
   default = "gblow-qserv"   # name of keypair created
 }
 
+variable "availability-zone" {
+  type    = string
+  default = "testbed"
+}
+
 variable "network" {
   type    = string
   default = "qserv" # default network to be used
@@ -59,6 +64,7 @@ resource "openstack_compute_instance_v2" "jump" {
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
+  availability_zone_hints = var.availability-zone
   security_groups = ["qserv-jump-sg","qserv-kube-sg"]
 
   network {
