@@ -209,6 +209,7 @@
 - name: Display cri-dockerd version
   debug: 
     var: cri_dockerd_api_result
+  loop: "{{ domain_definition | community.general.json_query('tag_name') }}"
   tags:
     - dev
     - cri-dockerd
