@@ -60,6 +60,15 @@
     - docker
     - basic
 
+- name: apt-get install git
+  become: yes
+  apt:
+    name: git
+    state: latest
+  tags:
+    - cri-dockerd
+    - basic
+
 - name: apt-get install ca-certificates
   become: yes
   apt:
@@ -177,7 +186,6 @@
     dest: /etc/modules-load.d/k8s.conf
   tags:
     - docker
-    - dev
 
 - name: create /etc/sysctl.d/kubernetes.conf
   become: yes
@@ -189,20 +197,13 @@
     dest: /etc/sysctl.d/kubernetes.conf
   tags:
     - docker
+
+- name: get cri-dockerd version
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest
+  tags:
     - dev
-
-- name: setup default containerd config
-  become: yes
-  shell: 'containerd config default | sudo tee /etc/containerd/config.toml'
-  tags:
-    - deprecate
-
-- name: restart containerd
-  become: yes
-  service: name=containerd state=restarted
-  tags:
-    - deprecate
-    
+    - cri-dockerd
 
 - name: get kubernetes gpg key
   become: yes
