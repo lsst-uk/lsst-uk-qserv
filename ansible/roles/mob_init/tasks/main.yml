@@ -339,6 +339,9 @@
   become: yes
   file: 
     path: /home/ubuntu/cri-dockerd/bin
+    owner: ubuntu
+    group: ubuntu
+    mode: '0775'
     state: directory
   tags:
     - cri-dockerd
