@@ -131,6 +131,14 @@
   tags: 
     - docker
 
+- name: create /etc/systemd/system/docker.service.d
+  become: yes
+  file: 
+    path: /etc/docker/
+    state: directory
+  tags: 
+    - debug
+
 - name: Create/ensure daemon json config file
   become: yes
   ansible.builtin.blockinfile: 
