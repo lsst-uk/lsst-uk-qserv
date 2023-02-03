@@ -222,6 +222,7 @@
     - cri-dockerd
 
 - name: Move cri-dockerd binary to usr/local/bin/
+  become: yes
   ansible.builtin.copy:
     remote_src: yes
     src: /home/ubuntu/cri-dockerd/cri-dockerd
