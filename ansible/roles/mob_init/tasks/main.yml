@@ -209,6 +209,17 @@
 - name: Display cri-dockerd version
   debug: 
     msg: "{{ cri_dockerd_api_result.json.tag_name }}"
+  register: cri_dockerd_version
+  tags:
+    - dev
+    - cri-dockerd
+
+
+- name: Unarchive cri-dockerd release file
+  ansible.builtin.unarchive:
+    src: https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
+    dest: /home/ubuntu/cri-dockerd
+    remote_src: yes
   tags:
     - dev
     - cri-dockerd
