@@ -225,6 +225,9 @@
   become: yes
   ansible.builtin.copy:
     remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
     src: /home/ubuntu/cri-dockerd/cri-dockerd
     dest: /usr/local/bin/cri-dockerd
   tags:
