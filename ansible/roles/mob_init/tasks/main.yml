@@ -272,7 +272,6 @@
     daemon_reload: true
   tags:
     - cri-dockerd
-    - dev
 
 - name: restart cri-docker.service
   become: yes
@@ -282,7 +281,6 @@
     name: cri-docker.service
   tags:
     - cri-dockerd
-    - dev
 
 - name: Enable cri-docker.socket
   become: yes
@@ -291,8 +289,7 @@
     enabled: true
     daemon_reload: true
   tags:
-    - cri-dockerd
-    - dev    
+    - cri-dockerd   
 
 - name: restart cri-docker.socket
   become: yes
@@ -300,6 +297,18 @@
     state: restarted
     daemon_reload: true
     name: cri-docker.socket
+  tags:
+    - cri-dockerd
+    - dev
+
+- name: Download golang
+  ansible.builtin.get_url:
+    url: https://storage.googleapis.com/golang/getgo/installer_linux
+    dest: /home/ubuntu/installer_linux
+    owner: ubuntu
+    group: ubuntu
+    mode: '775'
+  become: yes
   tags:
     - cri-dockerd
     - dev
