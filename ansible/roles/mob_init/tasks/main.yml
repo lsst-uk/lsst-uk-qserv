@@ -243,7 +243,6 @@
   become: yes
   tags:
     - cri-dockerd
-    - dev  
 
 - name: Download cri-docker.service
   ansible.builtin.get_url:
@@ -255,7 +254,16 @@
   become: yes
   tags:
     - cri-dockerd
-    - dev  
+
+- name: Change location of binary in service definition
+  become: yes
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/system/cri-docker.service
+    regexp: '^ExecStart='
+    line: ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd://
+  tags:
+    - cri-dockerd
+    - dev
 
 - name: get kubernetes gpg key
   become: yes
