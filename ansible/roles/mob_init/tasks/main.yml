@@ -167,6 +167,7 @@
     - docker
 
 - name: restart docker service
+  become: yes
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: true
@@ -175,6 +176,7 @@
     - dev
 
 - name: enable docker service
+  become: yes
   ansible.builtin.systemd:
     name: docker
     enabled: true
