@@ -299,7 +299,6 @@
     name: cri-docker.socket
   tags:
     - cri-dockerd
-    - dev
 
 - name: Download golang
   ansible.builtin.get_url:
@@ -311,7 +310,6 @@
   become: yes
   tags:
     - cri-dockerd
-    - dev
 
 - name: Install golang
   shell: 
