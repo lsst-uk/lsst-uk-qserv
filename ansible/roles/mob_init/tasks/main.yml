@@ -141,30 +141,16 @@
 
 - name: create /etc/docker/daemon.json
   become: yes
-  file:
+  ansible.builtin.template:
+    src: daemon.json
     owner: root
     group: root
-    state: touch
     mode: '0644'
-    path: /etc/docker/daemon.json
+    dest: /etc/docker/daemon.json
   tags:
-    - docker
+    - dev
 
-- name: Ensure daemon.json config file contains necessary content
-  become: yes
-  ansible.builtin.blockinfile: 
-    path: /etc/docker/daemon.json
-    block: |
-      {
-        "exec-opts": ["native.cgroupdriver=systemd"],
-        "log-driver": "json-file",
-        "log-opts": {
-          "max-size": "100m"
-        },
-        "storage-driver": "overlay2"
-      }
-  tags: 
-    - docker
+
 
 - name: restart docker service
   become: yes
