@@ -144,6 +144,7 @@
   file:
     owner: root
     group: root
+    state: file
     mode: '0644'
     path: /etc/docker/daemon.json
   tags:
