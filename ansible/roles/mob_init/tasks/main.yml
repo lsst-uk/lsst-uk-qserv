@@ -1,36 +1,32 @@
-- name: Copy containerd.conf to hosts
-  become: yes
-  template:
-    src: containerd.conf
-    dest: /etc/modules-load.d/containerd.conf
 
 - name: Add overlay module
   become: yes
   modprobe:
     name: overlay
     state: present
+  tags: 
+    - debug
 
 - name: Add br_netfilter module
   become: yes
   modprobe:
     name: br_netfilter
     state: present
-
-- name: Copy 99-kubernetes-cri.conf to hosts
-  become: yes
-  template:
-    src: 99-kubernetes-cri.conf
-    dest: /etc/sysctl.d/99-kubernetes-cri.conf
+  tags: 
+    - debug
 
 - name: sysctl read values from all system directories
   become: yes
   shell: sysctl --system
+  tags: 
+    - debug
 
 - name: De-armor docker gpg key
   become: yes
   shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
   tags:
     - docker
+    - debug
 
 - name: Add Docker apt repository
   become: yes
@@ -39,7 +35,8 @@
     repo: "deb [signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
     state: present
   tags:
-    - docker  
+    - docker 
+    - debug 
 
 - name: apt-get update
   become: yes
@@ -47,11 +44,14 @@
     update_cache: yes
   tags:
     - docker
+    - debug
 
 - name: apt-get upgrade
   become: yes
   apt:
     upgrade: dist
+  tags: 
+    - debug
 
 - name: apt-get install apt-transport-https
   become: yes
@@ -60,6 +60,7 @@
     state: latest
   tags:
     - docker
+    - debug
 
 - name: apt-get install ca-certificates
   become: yes
@@ -68,6 +69,7 @@
     state: latest
   tags:
     - docker
+    - debug
 
 - name: apt-get install curl
   become: yes
@@ -76,22 +78,16 @@
     state: latest
   tags:
     - docker
+    - debug
 
-- name: apt-get install gnupg
+- name: apt-get install gnupg2
   become: yes
   apt:
-    name: gnupg
+    name: gnupg2
     state: latest
   tags:
     - docker
-
-- name: apt-get install lsb-release
-  become: yes
-  apt:
-    name: lsb-release
-    state: latest
-  tags:
-    - docker
+    - debug
 
 - name: apt-get install software-properties-common
   become: yes
@@ -100,6 +96,7 @@
     state: latest
   tags:
     - docker
+    - debug
 
 - name: apt-get install containerd.io
   become: yes
@@ -108,24 +105,47 @@
     state: latest
   tags:
     - docker
+    - debug
 
-- name: create /etc/containerd
+- name: apt-get install docker-ce
+  become: yes
+  apt:
+    name: docker-ce
+    state: latest
+  tags:
+    - docker
+    - debug
+
+- name: apt-get install docker-ce-cli
+  become: yes
+  apt:
+    name: docker-ce-cli
+    state: latest
+  tags:
+    - docker
+    - debug
+
+- name: create /etc/systemd/system/docker.service.d
   become: yes
   file: 
-    path: /etc/containerd
+    path: /etc/systemd/system/docker.service.d
     state: directory
+  tags: 
+    - debug
 
 - name: setup default containerd config
   become: yes
   shell: 'containerd config default | sudo tee /etc/containerd/config.toml'
   tags:
     - docker
+    - debug
 
 - name: restart containerd
   become: yes
   service: name=containerd state=restarted
   tags:
     - docker
+    
 
 - name: get kubernetes gpg key
   become: yes
