@@ -263,6 +263,43 @@
     line: ExecStart=/usr/local/bin/cri-dockerd --container-runtime-endpoint fd://
   tags:
     - cri-dockerd
+
+- name: Enable cri-docker.service
+  ansible.builtin.systemd:
+    name: cri-docker.service
+    enabled: true
+    daemon_reload: true
+  tags:
+    - cri-dockerd
+    - dev
+
+- name: restart cri-docker.service
+  become: yes
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    name: cri-docker.service
+  tags:
+    - cri-dockerd
+    - dev
+
+- name: Enable cri-docker.socket
+  ansible.builtin.systemd:
+    name: cri-docker.socket
+    enabled: true
+    daemon_reload: true
+  tags:
+    - cri-dockerd
+    - dev    
+
+- name: restart cri-docker.socket
+  become: yes
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    name: cri-docker.socket
+  tags:
+    - cri-dockerd
     - dev
 
 - name: get kubernetes gpg key
