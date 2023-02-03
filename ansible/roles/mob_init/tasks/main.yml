@@ -216,7 +216,7 @@
 - name: Unarchive cri-dockerd release file
   ansible.builtin.unarchive:
     src: https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.1/cri-dockerd-0.3.1.amd64.tgz
-    dest: /home/ubuntu/cri-dockerd
+    dest: /home/ubuntu/
     remote_src: yes
   tags:
     - dev
