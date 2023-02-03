@@ -20,7 +20,7 @@ variable "keypair" {
 
 variable "availability-zone" {
   type    = string
-  default = "testbed"
+  default = "nova"
 }
 
 variable "network" {
