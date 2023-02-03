@@ -318,8 +318,23 @@
   register: golang_installer_output
   tags:
     - cri-dockerd
+
+- name: Git checkout of cri-dockerd
+  ansible.builtin.git:
+    repo: 'https://github.com/Mirantis/cri-dockerd.git'
+    dest: /home/ubuntu/cri-dockerd
+  tags:
+    - cri-dockerd
     - dev
 
+- name: create /home/ubuntu/cri-dockerd/bin
+  become: yes
+  file: 
+    path: /home/ubuntu/cri-dockerd/bin
+    state: directory
+  tags:
+    - cri-dockerd
+    - dev
 
 - name: get kubernetes gpg key
   become: yes
@@ -348,5 +363,4 @@
     - ipvsadm
   tags:
     - kubernetes      
-
 
