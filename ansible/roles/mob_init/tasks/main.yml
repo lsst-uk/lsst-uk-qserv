@@ -219,8 +219,16 @@
     dest: /home/ubuntu/
     remote_src: yes
   tags:
-    - dev
     - cri-dockerd
+
+- name: Move cri-dockerd binary to usr/local/bin/
+  ansible.builtin.copy:
+    remote_src: yes
+    src: /home/ubuntu/cri-dockerd/cri-dockerd
+    dest: /usr/local/bin/cri-dockerd
+  tags:
+    - cri-dockerd
+    - dev
 
 - name: get kubernetes gpg key
   become: yes
