@@ -137,7 +137,7 @@
     path: /etc/docker/
     state: directory
   tags: 
-    - debug
+    - docker
 
 - name: create /etc/docker/daemon.json
   become: yes
@@ -148,9 +148,9 @@
     mode: '0644'
     path: /etc/docker/daemon.json
   tags:
-    - debug
+    - docker
 
-- name: Ensure daemon json config file contains necessary content
+- name: Ensure daemon.json config file contains necessary content
   become: yes
   ansible.builtin.blockinfile: 
     path: /etc/docker/daemon.json
@@ -164,8 +164,22 @@
         "storage-driver": "overlay2"
       }
   tags: 
-    - debug
+    - docker
 
+- name: restart docker service
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    name: docker
+  tags:
+    - dev
+
+- name: enable docker service
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+  tags:
+    - dev
 
 - name: setup default containerd config
   become: yes
