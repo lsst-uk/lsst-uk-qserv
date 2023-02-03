@@ -203,7 +203,6 @@
     url: https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest
   register: cri_dockerd_api_result
   tags:
-    - dev
     - cri-dockerd
 
 - name: Display cri-dockerd version
@@ -211,7 +210,6 @@
     msg: "{{ cri_dockerd_api_result.json.tag_name }}"
   register: cri_dockerd_version
   tags:
-    - dev
     - cri-dockerd
 
 
