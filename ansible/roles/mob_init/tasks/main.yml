@@ -313,6 +313,16 @@
     - cri-dockerd
     - dev
 
+- name: Install golang
+  shell: 
+    cmd: |
+      /home/ubuntu/installer_linux
+  register: golang_installer_output
+  tags:
+    - cri-dockerd
+    - dev
+
+
 - name: get kubernetes gpg key
   become: yes
   get_url:
