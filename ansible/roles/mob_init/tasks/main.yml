@@ -131,7 +131,7 @@
   tags: 
     - docker
 
-- name: create /etc/systemd/system/docker.service.d
+- name: create /etc/docker/
   become: yes
   file: 
     path: /etc/docker/
@@ -150,8 +150,6 @@
   tags:
     - docker
 
-
-
 - name: restart docker service
   become: yes
   ansible.builtin.systemd:
@@ -168,6 +166,30 @@
     enabled: true
   tags:
     - docker
+
+- name: create /etc/modules-load.d/k8s.conf
+  become: yes
+  ansible.builtin.template:
+    src: k8s.conf
+    owner: root
+    group: root
+    mode: '0644'
+    dest: /etc/modules-load.d/k8s.conf
+  tags:
+    - docker
+    - dev
+
+- name: create /etc/sysctl.d/kubernetes.conf
+  become: yes
+  ansible.builtin.template:
+    src: kubernetes.conf
+    owner: root
+    group: root
+    mode: '0644'
+    dest: /etc/sysctl.d/kubernetes.conf
+  tags:
+    - docker
+    - dev
 
 - name: setup default containerd config
   become: yes
@@ -209,3 +231,5 @@
     - ipvsadm
   tags:
     - kubernetes      
+
+
