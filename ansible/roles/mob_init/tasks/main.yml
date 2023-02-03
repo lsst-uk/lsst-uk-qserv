@@ -265,6 +265,7 @@
     - cri-dockerd
 
 - name: Enable cri-docker.service
+  become: yes
   ansible.builtin.systemd:
     name: cri-docker.service
     enabled: true
@@ -284,6 +285,7 @@
     - dev
 
 - name: Enable cri-docker.socket
+  become: yes
   ansible.builtin.systemd:
     name: cri-docker.socket
     enabled: true
