@@ -1,11 +1,10 @@
-
 - name: Add overlay module
   become: yes
   modprobe:
     name: overlay
     state: present
   tags: 
-    - debug
+    - basic
 
 - name: Add br_netfilter module
   become: yes
@@ -13,20 +12,19 @@
     name: br_netfilter
     state: present
   tags: 
-    - debug
+    - basic
 
 - name: sysctl read values from all system directories
   become: yes
   shell: sysctl --system
   tags: 
-    - debug
+    - basic
 
 - name: De-armor docker gpg key
   become: yes
   shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg --yes'
   tags:
     - docker
-    - debug
 
 - name: Add Docker apt repository
   become: yes
@@ -36,7 +34,7 @@
     state: present
   tags:
     - docker 
-    - debug 
+    - basic 
 
 - name: apt-get update
   become: yes
@@ -44,14 +42,14 @@
     update_cache: yes
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get upgrade
   become: yes
   apt:
     upgrade: dist
   tags: 
-    - debug
+    - basic
 
 - name: apt-get install apt-transport-https
   become: yes
@@ -60,7 +58,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install ca-certificates
   become: yes
@@ -69,7 +67,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install curl
   become: yes
@@ -78,7 +76,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install gnupg2
   become: yes
@@ -87,7 +85,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install software-properties-common
   become: yes
@@ -96,7 +94,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install containerd.io
   become: yes
@@ -105,7 +103,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install docker-ce
   become: yes
@@ -114,7 +112,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: apt-get install docker-ce-cli
   become: yes
@@ -123,7 +121,7 @@
     state: latest
   tags:
     - docker
-    - debug
+    - basic
 
 - name: create /etc/systemd/system/docker.service.d
   become: yes
@@ -131,20 +129,36 @@
     path: /etc/systemd/system/docker.service.d
     state: directory
   tags: 
+    - docker
+
+- name: Create/ensure daemon json config file
+  become: yes
+  ansible.builtin.blockinfile: 
+    path: /etc/docker/daemon.json
+    block: |
+      {
+        "exec-opts": ["native.cgroupdriver=systemd"],
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "100m"
+        },
+        "storage-driver": "overlay2"
+      }
+  tags: 
     - debug
+
 
 - name: setup default containerd config
   become: yes
   shell: 'containerd config default | sudo tee /etc/containerd/config.toml'
   tags:
-    - docker
-    - debug
+    - deprecate
 
 - name: restart containerd
   become: yes
   service: name=containerd state=restarted
   tags:
-    - docker
+    - deprecate
     
 
 - name: get kubernetes gpg key
