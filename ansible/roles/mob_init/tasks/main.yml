@@ -139,7 +139,17 @@
   tags: 
     - debug
 
-- name: Create/ensure daemon json config file
+- name: create /etc/docker/daemon.json
+  become: yes
+  file:
+    owner: root
+    group: root
+    mode: '0644'
+    path: /etc/docker/daemon.json
+  tags:
+    - debug
+
+- name: Ensure daemon json config file contains necessary content
   become: yes
   ansible.builtin.blockinfile: 
     path: /etc/docker/daemon.json
