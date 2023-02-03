@@ -201,14 +201,14 @@
 - name: get cri-dockerd version
   ansible.builtin.uri:
     url: https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest
-  register: cri-dockerd-api-result
+  register: cri_dockerd_api_result
   tags:
     - dev
     - cri-dockerd
 
 - name: Display cri-dockerd version
   debug: 
-    var: cri-dockerd-api-result
+    var: cri_dockerd_api_result
   tags:
     - dev
     - cri-dockerd
