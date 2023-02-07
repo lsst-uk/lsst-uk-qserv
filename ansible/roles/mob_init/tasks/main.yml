@@ -319,14 +319,6 @@
   tags:
     - cri-dockerd
 
-- name: Remove /home/ubuntu/cri-dockerd
-  ansible.builtin.file:
-    path: /home/ubuntu/cri-dockerd
-    state: absent
-  tags:
-    - cri-dockerd
-    - dev
-
 - name: Git checkout of cri-dockerd
   ansible.builtin.git:
     repo: 'https://github.com/Mirantis/cri-dockerd.git'
