@@ -1,6 +1,6 @@
 - name: kubeadm init
   become: yes
-  shell: "sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
+  shell: "sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket /var/run/crio/crio.sock --upload-certs"
   args:
     creates: /etc/kubernetes/admin.conf
   async: 240
