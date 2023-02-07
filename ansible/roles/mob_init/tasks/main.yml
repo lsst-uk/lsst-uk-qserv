@@ -353,6 +353,12 @@
   tags:
     - cri-dockerd
     - dev
+
+- name: get cri-dockerd version
+  debug:
+    msg: cri_dockerd_version
+  tags:
+    - dev
   
 - name: get kubernetes gpg key
   become: yes
