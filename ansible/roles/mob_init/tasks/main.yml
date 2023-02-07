@@ -344,6 +344,7 @@
   register: cri_dockerd_version
   tags:
     - cri-dockerd
+    - dev
 
 - name: get cri-dockerd revision
   shell:
