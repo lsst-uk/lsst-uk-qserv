@@ -355,9 +355,24 @@
     - cri-dockerd
     - dev
 
-- name: get cri-dockerd version
+- name: echo cri-dockerd version
+  debug:
+    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+  
+  tags:
+    - dev
+
+- name: echo cri-dockerd revision
+  debug:
+    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+  
+  tags:
+    - dev
+
+- name: get cri-dockerd build command
   debug:
     msg: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout_lines }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout_lines }}" -o cri-dockerd/bin
+  verbose: 1
   tags:
     - dev
 
