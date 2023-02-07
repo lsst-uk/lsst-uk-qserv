@@ -348,7 +348,7 @@
 
 - name: get cri-dockerd version
   debug:
-    msg: "{{ cri_dockerd_version }}"
+    msg: "{{ cri_dockerd_version.stdout_lines }}"
   tags:
     - dev
   
