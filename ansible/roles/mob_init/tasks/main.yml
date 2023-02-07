@@ -344,11 +344,19 @@
   register: cri_dockerd_version
   tags:
     - cri-dockerd
+
+- name: get cri-dockerd revision
+  shell:
+    chdir: /home/ubuntu/cri-dockerd/
+    cmd: git log -1 --pretty='%h'
+  register: cri_dockerd_revision
+  tags:
+    - cri-dockerd
     - dev
 
 - name: get cri-dockerd version
   debug:
-    msg: "{{ cri_dockerd_version.stdout_lines }}"
+    msg: "{{ cri_dockerd_revision.stdout_lines }}"
   tags:
     - dev
   
