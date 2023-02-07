@@ -377,11 +377,11 @@
 
 - name: build cri-dockerd 
   shell:
-    chdir: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout_lines }} -X github.com/Mirantis/cri-dockerd/version.PreRelease='$PRERELEASE' -X github.com/Mirantis/cri-dockerd/version.BuildTime='$BUILD_DATE' -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout_lines }}" -o cri-dockerd/bin
-    cmd: git log -1 --pretty='%h'
-  register: cri_dockerd_revision
+    chdir: /home/ubuntu/cri-dockerd/
+    cmd: echo go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout_lines }} -X github.com/Mirantis/cri-dockerd/version.PreRelease='$PRERELEASE' -X github.com/Mirantis/cri-dockerd/version.BuildTime='$BUILD_DATE' -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout_lines }}" -o cri-dockerd/bin
   tags:
     - cri-dockerd
+    - dev
 
 - name: get kubernetes gpg key
   become: yes
