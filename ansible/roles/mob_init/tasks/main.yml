@@ -333,7 +333,6 @@
     dest: /home/ubuntu/cri-dockerd
   tags:
     - cri-dockerd
-    - dev
 
 - name: create /home/ubuntu/cri-dockerd/bin
   become: yes
@@ -345,8 +344,16 @@
     state: directory
   tags:
     - cri-dockerd
-    - dev
 
+- name: get cri-dockerd version
+  shell:
+    chdir: /home/ubuntu/cri-dockerd/
+    cmd: git describe --abbrev=0 --tags | sed -e 's/v//'
+  register: cri_dockerd_version
+  tags:
+    - cri-dockerd
+    - dev
+  
 - name: get kubernetes gpg key
   become: yes
   get_url:
