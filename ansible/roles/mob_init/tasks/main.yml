@@ -341,7 +341,7 @@
   shell:
     chdir: /home/ubuntu/cri-dockerd/
     cmd: git describe --abbrev=0 --tags | sed -e 's/v//'
-  register: cri_dockerd_version
+  register: cri_dockerd_version.stdout
   tags:
     - cri-dockerd
     - dev
@@ -350,35 +350,35 @@
   shell:
     chdir: /home/ubuntu/cri-dockerd/
     cmd: git log -1 --pretty='%h'
-  register: cri_dockerd_revision
+  register: cri_dockerd_revision.stdout
   tags:
     - cri-dockerd
     - dev
 
 - name: echo cri-dockerd version
   debug:
-    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+    msg: "{{ cri_dockerd_revision }}"
   
   tags:
     - dev
 
 - name: echo cri-dockerd revision
   debug:
-    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+    msg: "{{ cri_dockerd_revision }}"
   
   tags:
     - dev
 
 - name: get cri-dockerd build command
   debug:
-    msg: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout_lines }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout_lines }}" -o cri-dockerd/bin
+    msg: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision }}" -o cri-dockerd/bin
   tags:
     - dev
 
 - name: build cri-dockerd 
   shell:
     chdir: /home/ubuntu/cri-dockerd/
-    cmd: echo go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout_lines }} -X github.com/Mirantis/cri-dockerd/version.PreRelease='$PRERELEASE' -X github.com/Mirantis/cri-dockerd/version.BuildTime='$BUILD_DATE' -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout_lines }}" -o cri-dockerd/bin > debug.txt
+    cmd: echo go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version }} -X github.com/Mirantis/cri-dockerd/version.PreRelease='$PRERELEASE' -X github.com/Mirantis/cri-dockerd/version.BuildTime='$BUILD_DATE' -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision }}" -o cri-dockerd/bin > debug.txt
   tags:
     - cri-dockerd
     - dev
