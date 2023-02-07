@@ -41,14 +41,14 @@
 #  tags:
 #  - kube-setup
 
-#- name: kubeadm network setup
-#  shell: 
-#    cmd: |
-#      kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
-#  async: 240
-#  poll: 30
-#  tags:
-#  - kube-setup
+- name: kubeadm network setup
+  shell: 
+    cmd: |
+      kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+  async: 240
+  poll: 30
+  tags:
+  - kube-setup
 
 - name: Generate join command
   shell: 
