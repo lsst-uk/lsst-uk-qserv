@@ -61,7 +61,7 @@
 
 - name: Setjoin command as fact
   ansible.builtin.set_fact:
-    join_command_fact: "{{ join_command.stdout_lines[0] }}"
+    join_command_fact: "{{ join_command.stdout_lines[0] }} --cri-socket /var/run/cri-dockerd.sock"
     cacheable: yes
     delegate_to: boss
   tags:
@@ -77,7 +77,7 @@
   - kube-join
 
 - name: Copy join command to local file
-  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/tmp/qserv_tmp/join-command"
+  local_action: copy content="{{ join_command.stdout_lines[0] }} --cri-socket /var/run/cri-dockerd.sock" dest="/tmp/qserv_tmp/join-command"
   tags:
   - kube-setup  
   - kube-join
