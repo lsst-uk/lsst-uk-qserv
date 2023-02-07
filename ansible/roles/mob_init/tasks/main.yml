@@ -357,14 +357,14 @@
 
 - name: echo cri-dockerd version
   debug:
-    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+    msg: "{{ cri_dockerd_revision }}"
   
   tags:
     - dev
 
 - name: echo cri-dockerd revision
   debug:
-    msg: "{{ cri_dockerd_revision.stdout_lines }}"
+    msg: "{{ cri_dockerd_revision }}"
   
   tags:
     - dev
