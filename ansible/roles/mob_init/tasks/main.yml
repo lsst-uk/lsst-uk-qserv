@@ -371,14 +371,14 @@
 
 - name: get cri-dockerd build command
   debug:
-    msg: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout }}" -o cri-dockerd/bin
+    msg: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout }}" -o bin
   tags:
     - dev
 
 - name: build cri-dockerd 
   shell:
     chdir: /home/ubuntu/cri-dockerd/
-    cmd: echo go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout }} -X github.com/Mirantis/cri-dockerd/version.PreRelease='$PRERELEASE' -X github.com/Mirantis/cri-dockerd/version.BuildTime='$BUILD_DATE' -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout }}" -o cri-dockerd/bin > debug.txt
+    cmd: go build -ldflags="-X github.com/Mirantis/cri-dockerd/version.Version={{ cri_dockerd_version.stdout }} -X github.com/Mirantis/cri-dockerd/version.PreRelease= -X github.com/Mirantis/cri-dockerd/version.BuildTime= -X github.com/Mirantis/cri-dockerd/version.GitCommit={{ cri_dockerd_revision.stdout }}" -o bin
   tags:
     - cri-dockerd
     - dev
