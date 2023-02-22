@@ -37,15 +37,29 @@
   roles:
     - kubernetes_goon
 
+-hosts: goons
+  tasks:
+    - name : set up root qserv-data directory
+      file:
+        path: /qserv-data/
+        state: directory
+        owner: root
+        group: root
+        mode: 0655
+      become: yes
+      tags:
+        - qserv
+
+
 - hosts: czar
   tasks:
     - name: set up ingest directory
       file:
         path: /qserv-data/default/ingest
         state: directory
-        owner: root
-        group: root
-        mode: 0755
+        owner: ubuntu
+        group: ubuntu
+        mode: 0666
       become: yes
       tags:
         - qserv 
@@ -56,9 +70,9 @@
       file:
         path: /qserv-data/default/replication
         state: directory
-        owner: root
-        group: root
-        mode: 0755
+        owner: ubuntu
+        group: ubuntu
+        mode: 0666
       become: yes
       tags:
         - qserv 
@@ -69,9 +83,9 @@
       file:
         path: /qserv-data/default/qserv
         state: directory
-        owner: root
-        group: root
-        mode: 0755
+        owner: ubuntu
+        group: ubuntu
+        mode: 0666
       become: yes
       tags:
         - qserv        
