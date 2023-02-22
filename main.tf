@@ -35,7 +35,7 @@ variable "security_groups" {
 
 variable "worker_count" {
   type    = number
-  default = 2
+  default = 5
 }
 
 # Data sources
