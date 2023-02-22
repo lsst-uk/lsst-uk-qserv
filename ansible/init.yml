@@ -36,3 +36,42 @@
 - hosts: goons
   roles:
     - kubernetes_goon
+
+- hosts: czar
+  tasks:
+    - name: set up ingest directory
+      file:
+        path: /qserv-data/default/ingest
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+      tags:
+        - qserv 
+
+- hosts: czar
+  tasks:
+    - name: set up replication directory
+      file:
+        path: /qserv-data/default/replication
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+      tags:
+        - qserv 
+
+- hosts: goons
+  tasks:
+    - name: set up qserv directory
+      file:
+        path: /qserv-data/default/qserv
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: yes
+      tags:
+        - qserv        
