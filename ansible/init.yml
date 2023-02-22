@@ -50,6 +50,18 @@
       tags:
         - qserv
 
+- hosts: goons
+  tasks:
+    - name : set up qserv-data/default directory
+      file:
+        path: /qserv-data/default/
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0755
+      become: yes
+      tags:
+        - qserv
 
 - hosts: czar
   tasks:
