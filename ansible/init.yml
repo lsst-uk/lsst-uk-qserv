@@ -45,7 +45,7 @@
         state: directory
         owner: root
         group: root
-        mode: 0655
+        mode: 0755
       become: yes
       tags:
         - qserv
