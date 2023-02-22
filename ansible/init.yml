@@ -71,7 +71,7 @@
         state: directory
         owner: ubuntu
         group: ubuntu
-        mode: 0755
+        mode: 0775
       become: yes
       tags:
         - qserv 
@@ -84,7 +84,7 @@
         state: directory
         owner: ubuntu
         group: ubuntu
-        mode: 0755
+        mode: 0775
       become: yes
       tags:
         - qserv 
@@ -97,7 +97,7 @@
         state: directory
         owner: ubuntu
         group: ubuntu
-        mode: 0755
+        mode: 0775
       become: yes
       tags:
         - qserv        
