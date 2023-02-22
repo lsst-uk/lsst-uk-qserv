@@ -65,10 +65,10 @@ resource "openstack_networking_floatingip_v2" "jump" {
 
 # Create worker volumes
 
-resource "openstack_blockstorage_volume_v3" "worker-vol" {
-  name = "worker-vol"
+resource "openstack_blockstorage_volume_v2" "worker-vol" {
+  name = "worker-vol${(count.index+1)}"
   size = 500
-  count= 2
+  count= var.worker_count
 }
 
 # Create jump host
@@ -124,6 +124,12 @@ resource "openstack_compute_instance_v2" "worker" {
   network {
     name = var.network
   }
+}
+
+resource "openstack_compute_volume_attach_v2" "attached" {
+  count       = var.worker_count
+  instance_id = "${openstack_compute_instance_v2.worker.*.id}"
+  volume_id   = "${openstack_blockstorage_volume_v2.worker-vol.*.id}"
 }
 
 resource "openstack_compute_floatingip_associate_v2" "jump" {
