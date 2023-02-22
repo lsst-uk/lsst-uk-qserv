@@ -127,6 +127,7 @@ resource "openstack_compute_instance_v2" "worker" {
 }
 
 resource "openstack_compute_volume_attach_v2" "attached" {
+  count       = var.worker_count
   instance_id = openstack_compute_instance_v2.worker[count.index].id
   volume_id   = openstack_blockstorage_volume_v2.worker-vol[count.index].id
 }
