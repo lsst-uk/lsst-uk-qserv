@@ -65,7 +65,7 @@ resource "openstack_networking_floatingip_v2" "jump" {
 
 # Create worker volumes
 
-resource "openstack_blockstorage_volume_v2" "worker-vol" {
+resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
   size = 500
   count= var.worker_count
