@@ -126,6 +126,11 @@ resource "openstack_compute_instance_v2" "worker" {
   }
 }
 
+resource "openstack_compute_volume_attach_v2" "attached" {
+  instance_id = openstack_compute_instance_v2.worker[1].id
+  volume_id   = openstack_blockstorage_volume_v2.worker-vol[1].id
+}
+
 resource "openstack_compute_floatingip_associate_v2" "jump" {
 floating_ip = openstack_networking_floatingip_v2.jump.address
 instance_id = openstack_compute_instance_v2.jump.id
