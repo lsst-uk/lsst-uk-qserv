@@ -33,6 +33,11 @@ variable "security_groups" {
   default = ["default"]  # Name of default security group
 }
 
+variable "worker_count" {
+  type    = number
+  default = 2
+}
+
 # Data sources
 ## Get Image ID
 data "openstack_images_image_v2" "image" {
@@ -56,6 +61,14 @@ data "openstack_compute_flavor_v2" "worker-flavor" {
 
 resource "openstack_networking_floatingip_v2" "jump" {
  pool = "external" 
+}
+
+# Create worker volumes
+
+resource "openstack_blockstorage_volume_v3" "worker-vol" {
+  name = "worker-vol"
+  size = 500
+  count= 2
 }
 
 # Create jump host
@@ -106,7 +119,7 @@ resource "openstack_compute_instance_v2" "worker" {
   key_pair        = var.keypair
   availability_zone_hints = var.availability-zone
   security_groups = ["qserv-kube-sg"]
-  count           = 2
+  count           = var.worker_count
 
   network {
     name = var.network
