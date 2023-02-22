@@ -33,9 +33,14 @@ variable "security_groups" {
   default = ["default"]  # Name of default security group
 }
 
+variable "utility_count" {
+  type    = number
+  default = 1
+}
+
 variable "worker_count" {
   type    = number
-  default = 5
+  default = 3
 }
 
 # Data sources
@@ -64,6 +69,12 @@ resource "openstack_networking_floatingip_v2" "jump" {
 }
 
 # Create worker volumes
+
+resource "openstack_blockstorage_volume_v3" "utility-vol" {
+  name = "worker-vol${(count.index+1)}"
+  size = 500
+  count= var.utility_count
+}
 
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
@@ -105,7 +116,7 @@ resource "openstack_compute_instance_v2" "utility" {
   key_pair        = var.keypair
   availability_zone_hints = var.availability-zone
   security_groups = ["qserv-kube-sg"]
-  count           = 1
+  count           = var.utility_count
   
   network {
     name = var.network
@@ -126,10 +137,16 @@ resource "openstack_compute_instance_v2" "worker" {
   }
 }
 
-resource "openstack_compute_volume_attach_v2" "attached" {
+resource "openstack_compute_volume_attach_v2" "worker_vol_attach" {
   count       = var.worker_count
   instance_id = openstack_compute_instance_v2.worker[count.index].id
   volume_id   = openstack_blockstorage_volume_v3.worker-vol[count.index].id
+}
+
+resource "openstack_compute_volume_attach_v2" "utility_vol_attach" {
+  count       = var.utility_count
+  instance_id = openstack_compute_instance_v2.utility[count.index].id
+  volume_id   = openstack_blockstorage_volume_v3.utility-vol[count.index].id
 }
 
 resource "openstack_compute_floatingip_associate_v2" "jump" {
