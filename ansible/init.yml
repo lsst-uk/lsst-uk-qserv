@@ -37,7 +37,7 @@
   roles:
     - kubernetes_goon
 
--hosts: goons
+- hosts: goons
   tasks:
     - name : set up root qserv-data directory
       file:
