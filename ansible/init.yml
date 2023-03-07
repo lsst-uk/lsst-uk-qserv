@@ -76,7 +76,7 @@
       tags:
         - qserv 
 
-- hosts: czar
+- hosts: czar:utility_nodes
   tasks:
     - name: set up replication directory
       file:
