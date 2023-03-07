@@ -1,0 +1,15 @@
+apiVersion: qserv.lsst.org/v1beta1
+kind: Qserv
+metadata:
+  name: qserv
+spec:
+  storage: "10Gi"
+  czar:
+    replicas: 1
+    storage: "100Gi"
+  queryService:
+      type: NodePort
+      nodePort: 30040
+  worker:
+    storage: "300Gi"
+    replicas: 3
