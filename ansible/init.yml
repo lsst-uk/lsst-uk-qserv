@@ -4,6 +4,7 @@
       community.general.parted:
         device: /dev/vdb
         label: gpt
+        flags: [ lvm ]
         number: 1
         state: present
         fs_type: ext4
@@ -11,8 +12,16 @@
       tags:
       - qserv
       - dev
-    - name: mount vdb as qserv-data 
-      ansible.posix.mount:
+    - name: format qserv-data partition  
+      filesystem:
+        fstype: ext4
+        dev: /dev/vdb1
+      become: yes
+      tags:
+      - qserv
+      - dev
+    - name: mount vdb1 as qserv-data 
+      mount:
         path: /qserv-data
         src: /dev/vdb1
         fstype: ext4
