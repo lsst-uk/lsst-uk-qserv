@@ -14,7 +14,7 @@
     - name: mount vdb as qserv-data 
       ansible.posix.mount:
         path: /qserv-data
-        src: /dev/vdb
+        src: /dev/vdb1
         fstype: ext4
         state: mounted 
       become: yes
