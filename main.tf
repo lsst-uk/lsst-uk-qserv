@@ -83,7 +83,7 @@ resource "openstack_blockstorage_volume_v3" "utility-vol" {
 
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
-  size = 5000
+  size = 10000
   count= var.worker_count
 }
 

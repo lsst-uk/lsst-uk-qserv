@@ -5,7 +5,8 @@
         path: /qserv-data
         src: /dev/vdb
         fstype: ext4
-        state: present 
+        state: mounted 
+      become: yes
       tags:
       - qserv
       - dev  
