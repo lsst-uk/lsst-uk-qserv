@@ -1,3 +1,15 @@
+- hosts: goons
+  tasks:
+    - name: mount vdb as qserv-data 
+      ansible.posix.mount:
+        path: /qserv-data
+        src: /dev/vdb
+        fstype: ext4
+        state: present 
+      tags:
+      - qserv
+      - dev  
+
 - hosts: all
   roles:
     - mob_init
