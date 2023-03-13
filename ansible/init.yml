@@ -6,6 +6,9 @@
         number: 1
         state: present
         fs_type: ext4
+      tags:
+      - qserv
+      - dev
     - name: mount vdb as qserv-data 
       ansible.posix.mount:
         path: /qserv-data
