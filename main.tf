@@ -35,12 +35,12 @@ variable "security_groups" {
 
 variable "utility_count" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "worker_count" {
   type    = number
-  default = 3
+  default = 10
 }
 
 # Data sources
@@ -52,16 +52,16 @@ data "openstack_images_image_v2" "image" {
 
 ## Get flavor id
 data "openstack_compute_flavor_v2" "jump-flavor" {
-  name = "qserv-jump-v2" # flavor to be used for jump
+  name = "qserv-jump-v3" # flavor to be used for jump
 }
 data "openstack_compute_flavor_v2" "czar-flavor" {
-  name = "qserv-jump-v2" # flavor to be used for czar
+  name = "qserv-czar-v3" # flavor to be used for czar
 }
 data "openstack_compute_flavor_v2" "utility-flavor" {
-  name = "qserv-jump-v2" # flavor to be used for utility nodes
+  name = "qserv-utility-v3" # flavor to be used for utility nodes
 }
 data "openstack_compute_flavor_v2" "worker-flavor" {
-  name = "qserv-jump-v2" # flavor to be used for worker nodes
+  name = "qserv-worker-v3" # flavor to be used for worker nodes
 }
 
 resource "openstack_networking_floatingip_v2" "jump" {
@@ -72,24 +72,24 @@ resource "openstack_networking_floatingip_v2" "jump" {
 
 resource "openstack_blockstorage_volume_v3" "czar-vol" {
   name = "czar-vol"
-  size = 100
+  size = 5000
 }
 
 resource "openstack_blockstorage_volume_v3" "utility-vol" {
   name = "utility-vol${(count.index+1)}"
-  size = 500
+  size = 5000
   count= var.utility_count
 }
 
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
-  size = 500
+  size = 5000
   count= var.worker_count
 }
 
 # Create jump host
 resource "openstack_compute_instance_v2" "jump" {
-  name            = "gb-qserv2-jump"  #Instance name
+  name            = "sv-qserv-jump"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
@@ -102,7 +102,7 @@ resource "openstack_compute_instance_v2" "jump" {
 }
 # Create czar
 resource "openstack_compute_instance_v2" "czar" {
-  name            = "gb-qserv2-czar"  #Instance name
+  name            = "sv-qserv-czar"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
@@ -115,7 +115,7 @@ resource "openstack_compute_instance_v2" "czar" {
 }
 
 resource "openstack_compute_instance_v2" "utility" {
-  name            = "gb-qserv2-utility-${(count.index+1)}"
+  name            = "sv-qserv-utility-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
@@ -129,7 +129,7 @@ resource "openstack_compute_instance_v2" "utility" {
 }
 
 resource "openstack_compute_instance_v2" "worker" {
-  name            = "gb-qserv2-worker-${(count.index+1)}"
+  name            = "sv-qserv-worker-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
