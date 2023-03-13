@@ -40,7 +40,7 @@ variable "utility_count" {
 
 variable "worker_count" {
   type    = number
-  default = 10
+  default = 3
 }
 
 # Data sources
