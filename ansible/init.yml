@@ -3,6 +3,7 @@
     - name: create new ext4 primary partition
       community.general.parted:
         device: /dev/vdb
+        label: gpt
         number: 1
         state: present
         fs_type: ext4
