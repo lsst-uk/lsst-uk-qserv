@@ -1,5 +1,11 @@
 - hosts: goons
   tasks:
+    - name: create new ext4 primary partition
+      community.general.parted:
+        device: /dev/vdb
+        number: 1
+        state: present
+        fs_type: ext4
     - name: mount vdb as qserv-data 
       ansible.posix.mount:
         path: /qserv-data
