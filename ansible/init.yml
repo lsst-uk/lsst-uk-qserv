@@ -6,6 +6,7 @@
         number: 1
         state: present
         fs_type: ext4
+      become: yes
       tags:
       - qserv
       - dev
