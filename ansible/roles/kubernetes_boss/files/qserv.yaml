@@ -3,13 +3,33 @@ kind: Qserv
 metadata:
   name: qserv
 spec:
-  storage: "10Gi"
+  storage: "100Gi"
   czar:
-    replicas: 1
-    storage: "100Gi"
+    storage: "5Ti"
+  worker:
+    storage: "10Ti"
+    replicas: 5
+  ingest:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: tier
+              operator: In
+              values:
+              - 'utility'
   queryService:
       type: NodePort
       nodePort: 30040
-  worker:
-    storage: "300Gi"
-    replicas: 3
+
+  xrootd:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: tier
+              operator: In
+              values:
+              - 'utility'
