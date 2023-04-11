@@ -11,7 +11,7 @@ PARALLEL_SSH_CFG="$HOME/.ssh/sshqserv"
 PARALLEL_SSH_MASTER="$HOME/.ssh/sshqservmaster"
 
 REPL_DB_HOST="sv-qserv-utility-1"
-INGEST_DB_HOST="sv-qserv-utility-1"
+INGEST_DB_HOST="sv-qserv-utility-2"
 
 ROOT_DATA_DIR="/qserv-data"
 DATA_DIR="${ROOT_DATA_DIR}/${NS}"
