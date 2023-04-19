@@ -29,7 +29,7 @@
       ansible.posix.authorized_key:
         user: ubuntu
         state: present
-        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/gb-qserv2-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
+        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
       tags:
       - ssh-setup
 
