@@ -35,7 +35,7 @@ variable "security_groups" {
 
 variable "utility_count" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "worker_count" {
@@ -52,16 +52,16 @@ data "openstack_images_image_v2" "image" {
 
 ## Get flavor id
 data "openstack_compute_flavor_v2" "jump-flavor" {
-  name = "qserv-jump-v3" # flavor to be used for jump
+  name = "qserv-jump-e3f" # flavor to be used for jump
 }
 data "openstack_compute_flavor_v2" "czar-flavor" {
-  name = "qserv-czar-v3" # flavor to be used for czar
+  name = "qserv-czar-dev" # flavor to be used for czar
 }
 data "openstack_compute_flavor_v2" "utility-flavor" {
-  name = "qserv-utility-v3" # flavor to be used for utility nodes
+  name = "qserv-utility-dev" # flavor to be used for utility nodes
 }
 data "openstack_compute_flavor_v2" "worker-flavor" {
-  name = "qserv-worker-v3" # flavor to be used for worker nodes
+  name = "qserv-worker-dev" # flavor to be used for worker nodes
 }
 
 resource "openstack_networking_floatingip_v2" "jump" {
