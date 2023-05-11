@@ -52,7 +52,7 @@ data "openstack_images_image_v2" "image" {
 
 ## Get flavor id
 data "openstack_compute_flavor_v2" "jump-flavor" {
-  name = "qserv-jump-e3f" # flavor to be used for jump
+  name = "qserv-jump-dev" # flavor to be used for jump
 }
 data "openstack_compute_flavor_v2" "czar-flavor" {
   name = "qserv-czar-dev" # flavor to be used for czar
