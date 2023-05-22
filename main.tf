@@ -94,7 +94,7 @@ resource "openstack_compute_instance_v2" "jump" {
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
   availability_zone_hints = var.availability-zone
-  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
+  security_groups = ["qserv-jump-sg","qserv-kube-sg", "qserv-mysql"]
 
   network {
     name = var.network
