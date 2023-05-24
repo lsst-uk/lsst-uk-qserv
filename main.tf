@@ -40,7 +40,7 @@ variable "utility_count" {
 
 variable "worker_count" {
   type    = number
-  default = 3
+  default = 5
 }
 
 # Data sources
@@ -83,7 +83,7 @@ resource "openstack_blockstorage_volume_v3" "utility-vol" {
 
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
-  size = 5000
+  size = 10000
   count= var.worker_count
 }
 
@@ -94,7 +94,7 @@ resource "openstack_compute_instance_v2" "jump" {
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
   availability_zone_hints = var.availability-zone
-  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
+  security_groups = ["qserv-jump-sg","qserv-kube-sg", "qserv-mysql"]
 
   network {
     name = var.network
