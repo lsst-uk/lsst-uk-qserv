@@ -1,0 +1,35 @@
+jumphost:
+  hosts:
+    sv-qserv-jump:
+
+boss:
+  hosts:
+    sv-qserv-jump:
+
+czar:
+  hosts:
+    sv-qserv-czar:
+
+workers:
+  hosts:
+    sv-qserv-worker-1:
+    sv-qserv-worker-2:
+    sv-qserv-worker-3:
+    sv-qserv-worker-4:
+    sv-qserv-worker-5:
+
+utility_nodes:
+  hosts:
+    sv-qserv-utility-1:
+    sv-qserv-utility-2:
+
+goons:
+  hosts:
+    sv-qserv-czar:
+    sv-qserv-worker-1:
+    sv-qserv-worker-2:
+    sv-qserv-worker-3:
+    sv-qserv-worker-4:
+    sv-qserv-worker-5:
+    sv-qserv-utility-1:
+    sv-qserv-utility-2:
