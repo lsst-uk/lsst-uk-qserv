@@ -81,6 +81,13 @@ resource "openstack_blockstorage_volume_v3" "utility-vol" {
   count= var.utility_count
 }
 
+resource "openstack_blockstorage_volume_v3" "utility-ssd" {
+  name = "utility-ssd${(count.index+1)}"
+  size = 1000
+  volume_type="ceph-ssd"
+  count= var.utility_count
+}
+
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
   size = 10000
@@ -151,6 +158,12 @@ resource "openstack_compute_volume_attach_v2" "utility_vol_attach" {
   count       = var.utility_count
   instance_id = openstack_compute_instance_v2.utility[count.index].id
   volume_id   = openstack_blockstorage_volume_v3.utility-vol[count.index].id
+}
+
+resource "openstack_compute_volume_attach_v2" "utility_ssd_attach" {
+  count       = var.utility_count
+  instance_id = openstack_compute_instance_v2.utility[count.index].id
+  volume_id   = openstack_blockstorage_volume_v3.utility-ssd[count.index].id
 }
 
 resource "openstack_compute_volume_attach_v2" "worker_vol_attach" {
