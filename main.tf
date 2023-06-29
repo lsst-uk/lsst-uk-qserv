@@ -52,16 +52,16 @@ data "openstack_images_image_v2" "image" {
 
 ## Get flavor id
 data "openstack_compute_flavor_v2" "jump-flavor" {
-  name = "qserv-jump-test" # flavor to be used for jump
+  name = "qserv-jump-dev" # flavor to be used for jump
 }
 data "openstack_compute_flavor_v2" "czar-flavor" {
-  name = "qserv-czar-test" # flavor to be used for czar
+  name = "qserv-czar-dev" # flavor to be used for czar
 }
 data "openstack_compute_flavor_v2" "utility-flavor" {
-  name = "qserv-utility-test" # flavor to be used for utility nodes
+  name = "qserv-utility-dev" # flavor to be used for utility nodes
 }
 data "openstack_compute_flavor_v2" "worker-flavor" {
-  name = "qserv-worker-test" # flavor to be used for worker nodes
+  name = "qserv-worker-dev" # flavor to be used for worker nodes
 }
 
 resource "openstack_networking_floatingip_v2" "jump" {
