@@ -28,38 +28,6 @@
       tags:
       - qserv
 
-- hosts: czar
-  tasks:
-    - name: create new ext4 primary partition for qserv caching
-      community.general.parted:
-        device: /dev/vdc
-        label: gpt
-        flags: [ lvm ]
-        number: 1
-        state: present
-        fs_type: ext4
-      become: yes
-      tags:
-      - qserv
-      
-    - name: format qserv-cache partition  
-      filesystem:
-        fstype: ext4
-        dev: /dev/vdc1
-      become: yes
-      tags:
-      - qserv
-
-    - name: mount vdc1 as qserv-cache
-      mount:
-        path: /qserv-cache
-        src: /dev/vdc1
-        fstype: ext4
-        state: mounted 
-      become: yes
-      tags:
-      - qserv
-
 
 - hosts: all
   roles:
@@ -142,6 +110,20 @@
     - name: set up replication directory
       file:
         path: /qserv-data/default/replication
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - qserv 
+
+
+- hosts: czar:utility_nodes
+  tasks:
+    - name: set up replication-controller (cache) directory
+      file:
+        path: /qserv-data/default/replication-controller/
         state: directory
         owner: ubuntu
         group: ubuntu
