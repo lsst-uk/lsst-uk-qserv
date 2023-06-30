@@ -72,13 +72,14 @@ resource "openstack_networking_floatingip_v2" "jump" {
 
 resource "openstack_blockstorage_volume_v3" "czar-vol" {
   name = "czar-vol"
-  size = 5000
+  size = 2000
   volume_type="ceph-ssd"
 }
 
 resource "openstack_blockstorage_volume_v3" "utility-vol" {
   name = "utility-vol${(count.index+1)}"
-  size = 5000
+  size = 2000
+  volume_type="ceph-ssd"
   count= var.utility_count
 }
 
