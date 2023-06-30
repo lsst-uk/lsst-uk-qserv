@@ -11,7 +11,6 @@
       become: yes
       tags:
       - qserv
-      - dev
     - name: format qserv-data partition  
       filesystem:
         fstype: ext4
@@ -19,7 +18,6 @@
       become: yes
       tags:
       - qserv
-      - dev
     - name: mount vdb1 as qserv-data 
       mount:
         path: /qserv-data
@@ -29,7 +27,39 @@
       become: yes
       tags:
       - qserv
-      - dev  
+
+- hosts: czar
+  tasks:
+    - name: create new ext4 primary partition
+      community.general.parted:
+        device: /dev/vdc
+        label: gpt
+        flags: [ lvm ]
+        number: 1
+        state: present
+        fs_type: ext4
+      become: yes
+      tags:
+      - qserv
+      
+    - name: format qserv-data partition  
+      filesystem:
+        fstype: ext4
+        dev: /dev/vdc1
+      become: yes
+      tags:
+      - qserv
+
+    - name: mount vdb1 as qserv-data 
+      mount:
+        path: /qserv-cache
+        src: /dev/vdc1
+        fstype: ext4
+        state: mounted 
+      become: yes
+      tags:
+      - qserv
+
 
 - hosts: all
   roles:
