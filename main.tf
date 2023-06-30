@@ -73,12 +73,6 @@ resource "openstack_networking_floatingip_v2" "jump" {
 resource "openstack_blockstorage_volume_v3" "czar-vol" {
   name = "czar-vol"
   size = 5000
-}
-
-
-resource "openstack_blockstorage_volume_v3" "czar-ssd" {
-  name = "czar-ssd"
-  size = 1000
   volume_type="ceph-ssd"
 }
 
@@ -152,14 +146,8 @@ resource "openstack_compute_instance_v2" "worker" {
 resource "openstack_compute_volume_attach_v2" "czar_vol_attach" {
   instance_id = openstack_compute_instance_v2.czar.id
   volume_id   = openstack_blockstorage_volume_v3.czar-vol.id
-  device = "/dev/vdb"
 }
 
-resource "openstack_compute_volume_attach_v2" "czar_ssd_attach" {
-  instance_id = openstack_compute_instance_v2.czar.id
-  volume_id   = openstack_blockstorage_volume_v3.czar-ssd.id
-  device = "/dev/vdc"
-}
 
 resource "openstack_compute_volume_attach_v2" "utility_vol_attach" {
   count       = var.utility_count
