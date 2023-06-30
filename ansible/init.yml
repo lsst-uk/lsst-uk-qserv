@@ -1,6 +1,6 @@
 - hosts: goons
   tasks:
-    - name: create new ext4 primary partition
+    - name: create new ext4 primary partition for qserv data
       community.general.parted:
         device: /dev/vdb
         label: gpt
@@ -30,7 +30,7 @@
 
 - hosts: czar
   tasks:
-    - name: create new ext4 primary partition
+    - name: create new ext4 primary partition for qserv caching
       community.general.parted:
         device: /dev/vdc
         label: gpt
@@ -42,7 +42,7 @@
       tags:
       - qserv
       
-    - name: format qserv-data partition  
+    - name: format qserv-cache partition  
       filesystem:
         fstype: ext4
         dev: /dev/vdc1
@@ -50,7 +50,7 @@
       tags:
       - qserv
 
-    - name: mount vdb1 as qserv-data 
+    - name: mount vdc1 as qserv-cache
       mount:
         path: /qserv-cache
         src: /dev/vdc1
