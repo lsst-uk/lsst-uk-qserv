@@ -161,4 +161,18 @@
         mode: 0775
       become: yes
       tags:
-        - qserv        
+        - qserv      
+
+- hosts: czar
+  tasks:
+    - name: set up qserv-cache directory
+      file: 
+        path: /qserv-cache
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - dev
+        - qserv  
