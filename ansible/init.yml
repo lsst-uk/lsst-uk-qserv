@@ -33,8 +33,6 @@
   roles:
     - mob_init
 
-
-
 - hosts: boss
   roles:
     - kubernetes_boss
@@ -123,6 +121,20 @@
       tags:
         - qserv 
 
+
+- hosts: czar:utility_nodes
+  tasks:
+    - name: set up replication-controller (cache) directory
+      file:
+        path: /qserv-data/default/replication-controller/
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - qserv 
+
 - hosts: goons
   tasks:
     - name: set up qserv directory
@@ -134,4 +146,18 @@
         mode: 0775
       become: yes
       tags:
-        - qserv        
+        - qserv      
+
+- hosts: czar
+  tasks:
+    - name: set up qserv-cache directory
+      file: 
+        path: /qserv-cache
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - dev
+        - qserv  

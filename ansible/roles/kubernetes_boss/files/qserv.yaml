@@ -22,6 +22,16 @@ spec:
   queryService:
       type: NodePort
       nodePort: 30040
+  replication:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - sv-qserv-utility-1
 
   xrootd:
     affinity:
