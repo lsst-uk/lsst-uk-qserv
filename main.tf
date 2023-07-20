@@ -15,7 +15,7 @@ provider "openstack" {
 # Variables
 variable "keypair" {
   type    = string
-  default = "gblow-qserv"   # name of keypair created
+  default = "dp"   # name of keypair created
 }
 
 variable "availability-zone" {

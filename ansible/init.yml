@@ -1,3 +1,34 @@
+- hosts: goons
+  tasks:
+    - name: create new ext4 primary partition for qserv data
+      community.general.parted:
+        device: /dev/vdb
+        label: gpt
+        flags: [ lvm ]
+        number: 1
+        state: present
+        fs_type: ext4
+      become: yes
+      tags:
+      - tagsfs
+    - name: format qserv-data partition  
+      filesystem:
+        fstype: ext4
+        dev: /dev/vdb1
+      become: yes
+      tags:
+      - tagsfs
+    - name: mount vdb1 as qserv-data 
+      mount:
+        path: /qserv-data
+        src: /dev/vdb1
+        fstype: ext4
+        state: mounted 
+      become: yes
+      tags:
+      - tagsfs
+
+
 - hosts: all
   roles:
     - mob_init
@@ -17,8 +48,10 @@
 
     - name: fetch ssh public key
       ansible.builtin.fetch:
-        src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub
         dest: /tmp/qserv_tmp/ssh-keys
+        src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub      
+        #src: /tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub
+        
       tags:
       - ssh-setup
 
@@ -26,14 +59,15 @@
   tasks:
     
     - name: deploy jump host ssh key
-      ansible.posix.authorized_key:
+      authorized_key:
         user: ubuntu
         state: present
-        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
+        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
+        #key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
       tags:
       - ssh-setup
-
-- hosts: goons
+      
+  hosts: goons
   roles:
     - kubernetes_goon
 
