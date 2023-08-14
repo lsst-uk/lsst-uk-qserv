@@ -1,5 +1,6 @@
 - hosts: goons
   tasks:
+
     - name: create new ext4 primary partition for qserv data
       community.general.parted:
         device: /dev/vdb
@@ -33,6 +34,8 @@
   roles:
     - mob_init
 
+
+
 - hosts: boss
   roles:
     - kubernetes_boss
@@ -48,20 +51,17 @@
       ansible.builtin.fetch:
         dest: /tmp/qserv_tmp/ssh-keys
         src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub      
-        #src: /tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub
         
       tags:
       - ssh-setup
 
 - hosts: goons
-  tasks:
-    
+  tasks:    
     - name: deploy jump host ssh key
       authorized_key:
         user: ubuntu
         state: present
         key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
-        #key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
       tags:
       - ssh-setup
       
@@ -121,20 +121,6 @@
       tags:
         - qserv 
 
-
-- hosts: czar:utility_nodes
-  tasks:
-    - name: set up replication-controller (cache) directory
-      file:
-        path: /qserv-data/default/replication-controller/
-        state: directory
-        owner: ubuntu
-        group: ubuntu
-        mode: 0775
-      become: yes
-      tags:
-        - qserv 
-
 - hosts: goons
   tasks:
     - name: set up qserv directory
@@ -146,18 +132,63 @@
         mode: 0775
       become: yes
       tags:
-        - qserv      
+        - qserv       
 
-- hosts: czar
+- hosts: jumphost
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: set up qserv-cache directory
-      file: 
-        path: /qserv-cache
-        state: directory
-        owner: ubuntu
-        group: ubuntu
-        mode: 0775
+    - name: Install requests python package
+      pip:
+        name: requests
+      tags: 
+        - boss
+    - name: pv_copy
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/ubuntu/skateful/{{ item }}"
+        mode: 0644
+        owner: root
+        group: root
+        #overwrite: yes
+      tags: 
+        - d_new
+        - hi 
+      with_items:
+        - "pvc.sh"
+        - "env.sh"
+          
+    - name: pv_sh
+      kubernetes.core.k8s:
+        state: present
+        src: /home/ubuntu/skateful/out/
+      #remote_src: true
+
+      
+      #cmd: pvc.sh
+      tags: 
+        - d_new
+        - boss
+    - name: Sleep for 60 seconds and continue with play
+      ansible.builtin.wait_for:
+        timeout: 60
+      tags: 
+        - d_new
+
+    - name: manifest
       become: yes
-      tags:
-        - dev
-        - qserv  
+      command: bash /home/ubuntu/skateful/create-manifests.sh
+      tags: 
+        - hi
+ 
+
+    #- name: Run kubectl get pods
+    # k8s:
+    # api_version: v1
+    # kind: Command
+    # namespace: default
+    # command: kubectl apply -n default -f /home/ubuntu/skateful/out/
+    # tags:
+    #   - hi
+    #   - boss
