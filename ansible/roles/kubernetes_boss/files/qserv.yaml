@@ -8,7 +8,7 @@ spec:
     storage: "5Ti"
   worker:
     storage: "10Ti"
-    replicas: 5
+    replicas: 3
   ingest:
     affinity:
       nodeAffinity:
