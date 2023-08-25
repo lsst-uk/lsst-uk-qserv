@@ -31,7 +31,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-              - sv-qserv-utility-1
+              - sv-qserv-test-utility-1
 
   xrootd:
     affinity:
