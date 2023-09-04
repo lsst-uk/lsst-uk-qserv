@@ -69,6 +69,14 @@
     - cri-dockerd
     - basic
 
+- name: apt-get install git-lfs
+  become: yes
+  apt:
+    name: git-lfs
+    state: latest
+  tags:
+    - basic
+
 - name: apt-get install ca-certificates
   become: yes
   apt:
