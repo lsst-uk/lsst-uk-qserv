@@ -15,7 +15,7 @@ provider "openstack" {
 # Variables
 variable "keypair" {
   type    = string
-  default = "dp"   # name of keypair created
+  default = "gblow-qserv"   # name of keypair created
 }
 
 variable "availability-zone" {
@@ -91,12 +91,12 @@ resource "openstack_blockstorage_volume_v3" "worker-vol" {
 
 # Create jump host
 resource "openstack_compute_instance_v2" "jump" {
-  name            = "sv-qserv-test-jump"  #Instance name
+  name            = "sv-qserv-ssd-jump"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
   availability_zone_hints = var.availability-zone
-  security_groups = ["qserv-jump-sg","qserv-kube-sg"]
+  security_groups = ["qserv-jump-sg","qserv-kube-sg","qserv-mysql"]
 
   network {
     name = var.network
@@ -104,7 +104,7 @@ resource "openstack_compute_instance_v2" "jump" {
 }
 # Create czar
 resource "openstack_compute_instance_v2" "czar" {
-  name            = "sv-qserv-test-czar"  #Instance name
+  name            = "sv-qserv-ssd-czar"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
@@ -117,7 +117,7 @@ resource "openstack_compute_instance_v2" "czar" {
 }
 
 resource "openstack_compute_instance_v2" "utility" {
-  name            = "sv-qserv-test-utility-${(count.index+1)}"
+  name            = "sv-qserv-ssd-utility-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
@@ -131,7 +131,7 @@ resource "openstack_compute_instance_v2" "utility" {
 }
 
 resource "openstack_compute_instance_v2" "worker" {
-  name            = "sv-qserv-test-worker-${(count.index+1)}"
+  name            = "sv-qserv-ssd-worker-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
