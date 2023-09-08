@@ -5,7 +5,7 @@ metadata:
 spec:
   storage: "100Gi"
   czar:
-    storage: "5Ti"
+    storage: "2Ti"
   worker:
     storage: "10Ti"
     replicas: 3
@@ -31,7 +31,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-              - sv-qserv-test-utility-1
+              - sv-qserv-eph-utility-1
 
   xrootd:
     affinity:
