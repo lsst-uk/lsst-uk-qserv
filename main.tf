@@ -55,10 +55,10 @@ data "openstack_compute_flavor_v2" "jump-flavor" {
   name = "qserv-jump-dev" # flavor to be used for jump
 }
 data "openstack_compute_flavor_v2" "czar-flavor" {
-  name = "qserv-czar-dev" # flavor to be used for czar
+  name = "qserv-czar-test" # flavor to be used for czar
 }
 data "openstack_compute_flavor_v2" "utility-flavor" {
-  name = "qserv-utility-dev" # flavor to be used for utility nodes
+  name = "qserv-utility-test" # flavor to be used for utility nodes
 }
 data "openstack_compute_flavor_v2" "worker-flavor" {
   name = "qserv-worker-dev" # flavor to be used for worker nodes
