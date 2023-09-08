@@ -135,10 +135,15 @@
         - qserv       
 
 - hosts: jumphost
-  become: yes
+  #become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
+    - name: conf
+      k8s:
+        kubeconfig: ~/.kube/config
+      tags: 
+        - boss
     - name: Install requests python package
       pip:
         name: requests
@@ -154,7 +159,8 @@
         #overwrite: yes
       tags: 
         - d_new
-        - hi 
+        - hi
+         
       with_items:
         - "pvc.sh"
         - "env.sh"
@@ -180,15 +186,35 @@
       become: yes
       command: bash /home/ubuntu/skateful/create-manifests.sh
       tags: 
-        - hi
- 
+        - test2
 
-    #- name: Run kubectl get pods
-    # k8s:
-    # api_version: v1
-    # kind: Command
-    # namespace: default
-    # command: kubectl apply -n default -f /home/ubuntu/skateful/out/
-    # tags:
-    #   - hi
-    #   - boss
+
+    - name: kubelet
+      become: yes      
+      command: kubectl apply -n default -f /home/ubuntu/skateful/out/
+      tags:
+        - test2
+
+    - name: wget
+      become: yes
+      shell: wget https://qserv-operator.lsst.io/install/main.html#with-custom-settings;  RELEASE=RELEASE='"'"$(grep -m 1 'RELEASE' main.html | awk -F '[;&]' '{print $3}')"'"'; echo $RELEASE >> /etc/environment
+      register: RELEASE
+      tags:
+        - test2
+         
+    - name: git
+      become: yes
+      shell: git clone --depth 1 --single-branch -b "$RELEASE" https://github.com/lsst/qserv-operator
+      tags:
+        - test2
+
+    - name: kustomization
+      become: yes
+      shell: cp -r qserv-operator/manifests/gke-qserv-prod/ qserv-operator/manifests/somerville-lsst-qserv
+      tags:
+        - test2
+
+
+
+
+
