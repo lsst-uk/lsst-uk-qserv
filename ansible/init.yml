@@ -214,7 +214,34 @@
       tags:
         - test2
 
+    - name: base
+      become: yes
+      shell: sudo sed -i 's|- ../gke-qserv-dev|- ../base|g' qserv-operator/manifests/somerville-lsst-qserv/kustomization.yaml 
+      tags:
+        - test2
 
 
+    - name: cert_manager
+      become: yes
+      shell: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+      tags:
+        - test2
 
+    - name: assign_util
+      become: yes
+      shell: kubectl label nodes sv-qserv-dev-utility-1 tier=utility
+      tags:
+        - test2
+
+    - name: apply_kustomization
+      become: yes
+      shell: cd qserv-operator; kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/$RELEASE/manifests/operator.yaml; kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+      tags:
+        - test2
+
+    - name: lfs
+      become: yes
+      shell: install git-lfs
+      tags:
+        - new
 
