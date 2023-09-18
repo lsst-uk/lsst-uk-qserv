@@ -239,9 +239,19 @@
       tags:
         - test2
 
-    - name: lfs
+    - name: git lfs
       become: yes
-      shell: install git-lfs
+      apt:
+        name: git-lfs
+        state: present
       tags:
         - new
+
+
+
+          #- name: lfs
+          #become: yes
+          #shell: install git-lfs
+          #tags:
+          #- new
 
