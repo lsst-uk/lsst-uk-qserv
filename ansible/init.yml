@@ -135,15 +135,22 @@
         - qserv       
 
 - hosts: jumphost
-  #become: yes
+  become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
+    - name: openshift
+      shell: pip install openshift pyyaml kubernetes 
+      tags:
+        - test5
+
+
     - name: conf
       k8s:
         kubeconfig: ~/.kube/config
       tags: 
-        - boss
+      #- boss
+      #  - test5
     - name: Install requests python package
       pip:
         name: requests
