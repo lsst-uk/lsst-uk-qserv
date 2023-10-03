@@ -113,3 +113,18 @@
     dest: /home/ubuntu/skateful/env.sh
   tags:
   - skateful
+
+- name: Run create-manifests.sh script to populate /out directory
+  shell:
+    cmd: |
+      bash /home/ubuntu/skateful/create-manifests.sh
+  tags:
+  - skateful
+
+
+- name: Run create-manifests.sh script to populate /out directory
+  shell:
+    cmd: |
+      kubectl apply -n default -f /home/ubuntu/skateful/out/
+  tags:
+  - skateful
