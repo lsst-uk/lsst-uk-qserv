@@ -122,7 +122,7 @@
   - skateful
 
 
-- name: Run create-manifests.sh script to populate /out directory
+- name: Apply skateful /out directory pv/pvc configuration
   shell:
     cmd: |
       kubectl apply -n default -f /home/ubuntu/skateful/out/
