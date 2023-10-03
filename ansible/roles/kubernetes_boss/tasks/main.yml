@@ -140,7 +140,7 @@
     repo: https://github.com/lsst/qserv-operator
     depth: 1
     version: 2023.7.1-rc3
-    single-branch: true
+    single_branch: true
     dest: /home/ubuntu/qserv-operator
     clone: yes
     update: yes
