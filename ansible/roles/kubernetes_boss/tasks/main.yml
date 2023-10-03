@@ -128,3 +128,88 @@
       kubectl apply -n default -f /home/ubuntu/skateful/out/
   tags:
   - skateful
+
+  - name: Check if Skateful clone exists
+  stat:
+    path: /home/ubuntu/skateful
+  register: skateful_stat
+  tags:
+  - skateful
+
+- name: Clone Skateful repository
+  git:
+    repo: https://github.com/k8s-school/skateful.git
+    dest: /home/ubuntu/skateful
+    clone: yes
+    update: yes
+  when: not skateful_stat.stat.exists
+  tags:
+  - skateful
+
+- name: Copy skateful env.sh to clone location
+  copy:
+    src: env.sh
+    dest: /home/ubuntu/skateful/env.sh
+  tags:
+  - skateful
+
+- name: Run create-manifests.sh script to populate /out directory
+  shell:
+    cmd: |
+      bash /home/ubuntu/skateful/create-manifests.sh
+  tags:
+  - skateful
+
+
+- name: Apply skateful /out directory pv/pvc configuration
+  shell:
+    cmd: |
+      kubectl apply -n default -f /home/ubuntu/skateful/out/
+  tags:
+  - skateful
+
+  - name: Check if Skateful clone exists
+  stat:
+    path: /home/ubuntu/skateful
+  register: qserv-operator
+  tags:
+  - qserv-operator
+
+- name: Clone Skateful repository
+  git:
+    repo: git clone --depth 1 --single-branch -b "2023.7.1-rc3" https://github.com/lsst/qserv-operator
+    dest: /home/ubuntu/qserv-operator
+    clone: yes
+    update: yes
+  when: not qserv-operator.stat.exists
+  tags:
+  - qserv-operator
+
+- name: Copy qserv.yaml to clone location
+  copy:
+    src: qserv.yaml
+    dest: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/qserv.yaml
+  tags:
+  - qserv-operator
+
+- name: Copy kustomization.yaml to clone location
+  copy:
+    src: kustomization.yaml
+    dest: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/kustomization.yaml
+  tags:
+  - qserv-operator
+
+- name: Apply qserv-operator
+  shell:
+    cmd: |
+      kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/2023.7.1-rc3/manifests/operator.yaml
+  tags:
+  - qserv-operator
+
+
+- name: Apply qserv 
+  shell:
+    cmd: |
+      kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+  tags:
+  - qserv-operator
