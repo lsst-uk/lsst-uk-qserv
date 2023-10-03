@@ -121,46 +121,6 @@
   tags:
   - skateful
 
-
-- name: Apply skateful /out directory pv/pvc configuration
-  shell:
-    cmd: |
-      kubectl apply -n default -f /home/ubuntu/skateful/out/
-  tags:
-  - skateful
-
-  - name: Check if Skateful clone exists
-  stat:
-    path: /home/ubuntu/skateful
-  register: skateful_stat
-  tags:
-  - skateful
-
-- name: Clone Skateful repository
-  git:
-    repo: https://github.com/k8s-school/skateful.git
-    dest: /home/ubuntu/skateful
-    clone: yes
-    update: yes
-  when: not skateful_stat.stat.exists
-  tags:
-  - skateful
-
-- name: Copy skateful env.sh to clone location
-  copy:
-    src: env.sh
-    dest: /home/ubuntu/skateful/env.sh
-  tags:
-  - skateful
-
-- name: Run create-manifests.sh script to populate /out directory
-  shell:
-    cmd: |
-      bash /home/ubuntu/skateful/create-manifests.sh
-  tags:
-  - skateful
-
-
 - name: Apply skateful /out directory pv/pvc configuration
   shell:
     cmd: |
