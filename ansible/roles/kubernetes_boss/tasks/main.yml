@@ -128,7 +128,7 @@
   tags:
   - skateful
 
-  - name: Check if qserv-operator clone exists
+- name: Check if qserv-operator clone exists
   stat:
     path: /home/ubuntu/qserv-operator
   register: qserv-operator
