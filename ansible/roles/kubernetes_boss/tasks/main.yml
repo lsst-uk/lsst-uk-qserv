@@ -152,7 +152,9 @@
   file:
     path: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
     state: directory
-
+  tags:
+  - qserv-operator
+  
 - name: Copy qserv.yaml to clone location
   copy:
     src: qserv.yaml
