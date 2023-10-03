@@ -148,6 +148,11 @@
   tags:
   - qserv-operator
 
+- name: create somerville manifests folder
+  file:
+    path: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+    state: directory
+
 - name: Copy qserv.yaml to clone location
   copy:
     src: qserv.yaml
@@ -168,7 +173,6 @@
       kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/2023.7.1-rc3/manifests/operator.yaml
   tags:
   - qserv-operator
-
 
 - name: Apply qserv 
   shell:
