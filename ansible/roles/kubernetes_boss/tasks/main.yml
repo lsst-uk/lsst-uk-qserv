@@ -131,7 +131,7 @@
 - name: Check if qserv-operator clone exists
   stat:
     path: /home/ubuntu/qserv-operator
-  register: qserv-operator_stat
+  register: qserv_operator_stat
   tags:
   - qserv-operator
 
@@ -141,7 +141,7 @@
     dest: /home/ubuntu/qserv-operator
     clone: yes
     update: yes
-  when: not qserv-operator_stat.stat.exists
+  when: not qserv_operator_stat.stat.exists
   tags:
   - qserv-operator
 
