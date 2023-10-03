@@ -168,14 +168,14 @@
   tags:
   - skateful
 
-  - name: Check if Skateful clone exists
+  - name: Check if qserv-operator clone exists
   stat:
-    path: /home/ubuntu/skateful
+    path: /home/ubuntu/qserv-operator
   register: qserv-operator
   tags:
   - qserv-operator
 
-- name: Clone Skateful repository
+- name: Clone qserv-operator repository
   git:
     repo: git clone --depth 1 --single-branch -b "2023.7.1-rc3" https://github.com/lsst/qserv-operator
     dest: /home/ubuntu/qserv-operator
