@@ -40,7 +40,7 @@ variable "utility_count" {
 
 variable "worker_count" {
   type    = number
-  default = 3
+  default = 5
 }
 
 # Data sources
@@ -79,6 +79,13 @@ resource "openstack_blockstorage_volume_v3" "czar-vol" {
 resource "openstack_blockstorage_volume_v3" "utility-vol" {
   name = "utility-vol${(count.index+1)}"
   size = 2000
+  volume_type="ceph-ssd"
+  count= var.utility_count
+}
+
+resource "openstack_blockstorage_volume_v3" "utility-ssd" {
+  name = "utility-ssd${(count.index+1)}"
+  size = 1000
   volume_type="ceph-ssd"
   count= var.utility_count
 }
@@ -155,6 +162,12 @@ resource "openstack_compute_volume_attach_v2" "utility_vol_attach" {
   instance_id = openstack_compute_instance_v2.utility[count.index].id
   volume_id   = openstack_blockstorage_volume_v3.utility-vol[count.index].id
   device = "/dev/vdb"
+}
+
+resource "openstack_compute_volume_attach_v2" "utility_ssd_attach" {
+  count       = var.utility_count
+  instance_id = openstack_compute_instance_v2.utility[count.index].id
+  volume_id   = openstack_blockstorage_volume_v3.utility-ssd[count.index].id
 }
 
 resource "openstack_compute_volume_attach_v2" "worker_vol_attach" {

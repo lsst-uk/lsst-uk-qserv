@@ -1,0 +1,41 @@
+Host sv-qserv-jump
+    Hostname 192.41.122.210
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+
+Host "sv-qserv-czar"
+    Hostname 10.71.0.106
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
+Host "sv-qserv-worker-1"
+    Hostname 10.71.0.89
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
+Host "sv-qserv-worker-2"
+    Hostname 10.71.0.22
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
+Host "sv-qserv-worker-3"
+    Hostname 10.71.0.16
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
+Host "sv-qserv-utility-1"
+    Hostname 10.71.0.12
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
+Host "sv-qserv-utility-2"
+    Hostname 10.71.0.236
+    proxyjump sv-qserv-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-jump
