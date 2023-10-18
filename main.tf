@@ -61,7 +61,7 @@ data "openstack_compute_flavor_v2" "utility-flavor" {
   name = "qserv-utility-v3" # flavor to be used for utility nodes
 }
 data "openstack_compute_flavor_v2" "worker-flavor" {
-  name = "qserv-worker-v3" # flavor to be used for worker nodes
+  name = "qserv-worker-v4" # flavor to be used for worker nodes
 }
 
 resource "openstack_networking_floatingip_v2" "jump" {
