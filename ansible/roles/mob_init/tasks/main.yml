@@ -69,6 +69,14 @@
     - cri-dockerd
     - basic
 
+- name: apt-get install git-lfs
+  become: yes
+  apt:
+    name: git-lfs
+    state: latest
+  tags:
+    - basic
+
 - name: apt-get install ca-certificates
   become: yes
   apt:
@@ -300,13 +308,12 @@
   tags:
     - cri-dockerd
 
-- name: get kubernetes gpg key
+- name: get and de-armor kubernetes gpg key
   become: yes
-  get_url:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: /etc/apt/keyrings/kubernetes.gpg
+  shell: 'curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes.gpg --yes'
   tags:
     - kubernetes
+    - dev
 
 - name: Add kubernetes apt repository
   become: yes
@@ -316,6 +323,7 @@
     state: present
   tags:
     - kubernetes  
+    - dev
 
 - name: apt-get kubernetes
   become: yes
@@ -327,4 +335,5 @@
     - ipvsadm
   tags:
     - kubernetes      
+
 
