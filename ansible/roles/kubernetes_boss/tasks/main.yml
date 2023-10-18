@@ -1,6 +1,6 @@
 - name: kubeadm init
   become: yes
-  shell: "sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket /run/cri-dockerd.sock --upload-certs"
+  shell: "kubeadm init --pod-network-cidr=10.244.0.0/16 --cri-socket /run/cri-dockerd.sock --upload-certs"
   args:
     creates: /etc/kubernetes/admin.conf
   async: 240
@@ -81,3 +81,36 @@
   tags:
   - kube-setup  
   - kube-join
+
+
+- name: Deploy cert manager
+  shell:
+    cmd: |
+      kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+  tags:
+  - cert-manager
+  - kube-setup
+
+- name: Check if Skateful clone exists
+  stat:
+    path: /home/ubuntu/skateful
+  register: skateful_stat
+  tags:
+  - skateful
+
+- name: Clone Skateful repository
+  git:
+    repo: https://github.com/k8s-school/skateful.git
+    dest: /home/ubuntu/skateful
+    clone: yes
+    update: yes
+  when: not skateful_stat.stat.exists
+  tags:
+  - skateful
+
+- name: Copy skateful env.sh to clone location
+  copy:
+    src: env.sh
+    dest: /home/ubuntu/skateful/env.sh
+  tags:
+  - skateful

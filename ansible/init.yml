@@ -1,6 +1,6 @@
 - hosts: goons
   tasks:
-    - name: create new ext4 primary partition
+    - name: create new ext4 primary partition for qserv data
       community.general.parted:
         device: /dev/vdb
         label: gpt
@@ -10,16 +10,14 @@
         fs_type: ext4
       become: yes
       tags:
-      - qserv
-      - dev
+      - tagsfs
     - name: format qserv-data partition  
       filesystem:
         fstype: ext4
         dev: /dev/vdb1
       become: yes
       tags:
-      - qserv
-      - dev
+      - tagsfs
     - name: mount vdb1 as qserv-data 
       mount:
         path: /qserv-data
@@ -28,14 +26,12 @@
         state: mounted 
       become: yes
       tags:
-      - qserv
-      - dev  
+      - tagsfs
+
 
 - hosts: all
   roles:
     - mob_init
-
-
 
 - hosts: boss
   roles:
@@ -50,8 +46,10 @@
 
     - name: fetch ssh public key
       ansible.builtin.fetch:
-        src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub
         dest: /tmp/qserv_tmp/ssh-keys
+        src: /home/ubuntu/.ssh/jump_id_ssh_rsa.pub      
+        #src: /tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub
+        
       tags:
       - ssh-setup
 
@@ -59,14 +57,15 @@
   tasks:
     
     - name: deploy jump host ssh key
-      ansible.posix.authorized_key:
+      authorized_key:
         user: ubuntu
         state: present
-        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
+        key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-dev-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
+        #key: "{{ lookup('file', '/tmp/qserv_tmp/ssh-keys/sv-qserv-jump/home/ubuntu/.ssh/jump_id_ssh_rsa.pub') }}"
       tags:
       - ssh-setup
-
-- hosts: goons
+      
+  hosts: goons
   roles:
     - kubernetes_goon
 
@@ -122,6 +121,20 @@
       tags:
         - qserv 
 
+
+- hosts: czar:utility_nodes
+  tasks:
+    - name: set up replication-controller (cache) directory
+      file:
+        path: /qserv-data/default/replication-controller/
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - qserv 
+
 - hosts: goons
   tasks:
     - name: set up qserv directory
@@ -133,4 +146,18 @@
         mode: 0775
       become: yes
       tags:
-        - qserv        
+        - qserv      
+
+- hosts: czar
+  tasks:
+    - name: set up qserv-cache directory
+      file: 
+        path: /qserv-cache
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+      become: yes
+      tags:
+        - dev
+        - qserv  

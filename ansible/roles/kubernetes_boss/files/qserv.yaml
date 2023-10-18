@@ -5,7 +5,7 @@ metadata:
 spec:
   storage: "100Gi"
   czar:
-    storage: "5Ti"
+    storage: "2Ti"
   worker:
     storage: "10Ti"
     replicas: 3
@@ -22,6 +22,16 @@ spec:
   queryService:
       type: NodePort
       nodePort: 30040
+  replication:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - sv-qserv-eph-utility-1
 
   xrootd:
     affinity:
