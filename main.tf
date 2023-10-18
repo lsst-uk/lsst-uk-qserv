@@ -35,12 +35,12 @@ variable "security_groups" {
 
 variable "utility_count" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "worker_count" {
   type    = number
-  default = 5
+  default = 10
 }
 
 # Data sources
@@ -72,20 +72,13 @@ resource "openstack_networking_floatingip_v2" "jump" {
 
 resource "openstack_blockstorage_volume_v3" "czar-vol" {
   name = "czar-vol"
-  size = 2000
+  size = 5000
   volume_type="ceph-ssd"
 }
 
 resource "openstack_blockstorage_volume_v3" "utility-vol" {
   name = "utility-vol${(count.index+1)}"
-  size = 2000
-  volume_type="ceph-ssd"
-  count= var.utility_count
-}
-
-resource "openstack_blockstorage_volume_v3" "utility-ssd" {
-  name = "utility-ssd${(count.index+1)}"
-  size = 1000
+  size = 5000
   volume_type="ceph-ssd"
   count= var.utility_count
 }
@@ -93,12 +86,13 @@ resource "openstack_blockstorage_volume_v3" "utility-ssd" {
 resource "openstack_blockstorage_volume_v3" "worker-vol" {
   name = "worker-vol${(count.index+1)}"
   size = 10000
+  volume_type="ceph-ssd"
   count= var.worker_count
 }
 
 # Create jump host
 resource "openstack_compute_instance_v2" "jump" {
-  name            = "sv-qserv-ssd-jump"  #Instance name
+  name            = "sv-qserv-oct23-jump"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.jump-flavor.id
   key_pair        = var.keypair
@@ -111,7 +105,7 @@ resource "openstack_compute_instance_v2" "jump" {
 }
 # Create czar
 resource "openstack_compute_instance_v2" "czar" {
-  name            = "sv-qserv-ssd-czar"  #Instance name
+  name            = "sv-qserv-oct23-czar"  #Instance name
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.czar-flavor.id
   key_pair        = var.keypair
@@ -124,7 +118,7 @@ resource "openstack_compute_instance_v2" "czar" {
 }
 
 resource "openstack_compute_instance_v2" "utility" {
-  name            = "sv-qserv-ssd-utility-${(count.index+1)}"
+  name            = "sv-qserv-oct23-utility-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.utility-flavor.id
   key_pair        = var.keypair
@@ -138,7 +132,7 @@ resource "openstack_compute_instance_v2" "utility" {
 }
 
 resource "openstack_compute_instance_v2" "worker" {
-  name            = "sv-qserv-ssd-worker-${(count.index+1)}"
+  name            = "sv-qserv-oct23-worker-${(count.index+1)}"
   image_id        = data.openstack_images_image_v2.image.id
   flavor_id       = data.openstack_compute_flavor_v2.worker-flavor.id
   key_pair        = var.keypair
@@ -156,18 +150,11 @@ resource "openstack_compute_volume_attach_v2" "czar_vol_attach" {
   volume_id   = openstack_blockstorage_volume_v3.czar-vol.id
 }
 
-
 resource "openstack_compute_volume_attach_v2" "utility_vol_attach" {
   count       = var.utility_count
   instance_id = openstack_compute_instance_v2.utility[count.index].id
   volume_id   = openstack_blockstorage_volume_v3.utility-vol[count.index].id
   device = "/dev/vdb"
-}
-
-resource "openstack_compute_volume_attach_v2" "utility_ssd_attach" {
-  count       = var.utility_count
-  instance_id = openstack_compute_instance_v2.utility[count.index].id
-  volume_id   = openstack_blockstorage_volume_v3.utility-ssd[count.index].id
 }
 
 resource "openstack_compute_volume_attach_v2" "worker_vol_attach" {
