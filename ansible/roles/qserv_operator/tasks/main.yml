@@ -1,0 +1,54 @@
+- name: Check if qserv-operator clone exists
+  stat:
+    path: /home/ubuntu/qserv-operator
+  register: qserv_operator_stat
+  tags:
+  - qserv-operator
+
+- name: Clone qserv-operator repository
+  git:
+    repo: https://github.com/lsst/qserv-operator
+    depth: 1
+    version: 2023.7.1-rc3
+    single_branch: true
+    dest: /home/ubuntu/qserv-operator
+    clone: yes
+    update: yes
+  when: not qserv_operator_stat.stat.exists
+  tags:
+  - qserv-operator
+
+- name: create somerville manifests folder
+  file:
+    path: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+    state: directory
+  tags:
+  - qserv-operator
+
+- name: Copy qserv.yaml to clone location
+  copy:
+    src: qserv.yaml
+    dest: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/qserv.yaml
+  tags:
+  - qserv-operator
+
+- name: Copy kustomization.yaml to clone location
+  copy:
+    src: kustomization.yaml
+    dest: /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/kustomization.yaml
+  tags:
+  - qserv-operator
+
+- name: Apply qserv-operator
+  shell:
+    cmd: |
+      kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/2023.7.1-rc3/manifests/operator.yaml
+  tags:
+  - qserv-operator
+
+- name: Apply qserv
+  shell:
+    cmd: |
+      kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+  tags:
+  - qserv-operator
