@@ -18,6 +18,6 @@ ROOT_DATA_DIR="/qserv-data"
 DATA_DIR="${ROOT_DATA_DIR}/${NS}"
 
 MASTERS="sv-qserv-oct23-czar"
-WORKERS="sv-qserv-oct23-worker-1 sv-qserv-oct23-worker-2 sv-qserv-oct23-worker-3 sv-qserv-oct23-worker-4 sv-qserv-oct23-worker-5 sv-qserv-oct23-worker-6 sv-qserv-worker-7 sv-qserv-oct23-worker-8 sv-qserv-oct23-worker-9 sv-qserv-oct23-worker-10"
+WORKERS="sv-qserv-oct23-worker-1 sv-qserv-oct23-worker-2 sv-qserv-oct23-worker-3 sv-qserv-oct23-worker-4 sv-qserv-oct23-worker-5 sv-qserv-oct23-worker-6 sv-qserv-oct23-worker-7 sv-qserv-oct23-worker-8 sv-qserv-oct23-worker-9 sv-qserv-oct23-worker-10"
 
 SSH_CFG_OPT="-t"
