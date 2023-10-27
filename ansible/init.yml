@@ -160,4 +160,10 @@
       become: yes
       tags:
         - dev
-        - qserv  
+        - qserv 
+
+
+- hosts: boss
+  roles:
+    - skateful
+    - qserv_operator  
