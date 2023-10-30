@@ -1,41 +1,83 @@
-Host sv-qserv-jump
-    Hostname 192.41.122.210
+Host sv-qserv-oct23-jump
+    Hostname 192.41.122.91
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
 
-Host "sv-qserv-czar"
+Host "sv-qserv-oct23-czar"
+    Hostname 10.71.0.127
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-1"
+    Hostname 10.71.0.78
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-2"
+    Hostname 10.71.0.59
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-3"
+    Hostname 10.71.0.231
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-4"
+    Hostname 10.71.0.160
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-5"
+    Hostname 10.71.0.238
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-6"
+    Hostname 10.71.0.81
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-7"
+    Hostname 10.71.0.115
+    proxyjump sv-qserv-oct23-jump
+    User ubuntu
+    IdentityFile ~/.ssh/keys/gblow-qserv.pem
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-8"
     Hostname 10.71.0.106
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
-Host "sv-qserv-worker-1"
-    Hostname 10.71.0.89
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-9"
+    Hostname 10.71.0.219
+    proxyjump sv-qserv-oct23-jump
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
-Host "sv-qserv-worker-2"
-    Hostname 10.71.0.22
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-worker-10"
+    Hostname 10.71.0.40
+    proxyjump sv-qserv-oct23-jump
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
-Host "sv-qserv-worker-3"
-    Hostname 10.71.0.16
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-utility-1"
+    Hostname 10.71.0.114
+    proxyjump sv-qserv-oct23-jump
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
-Host "sv-qserv-utility-1"
-    Hostname 10.71.0.12
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump
+Host "sv-qserv-oct23-utility-2"
+    Hostname 10.71.0.34
+    proxyjump sv-qserv-oct23-jump
     User ubuntu
     IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
-Host "sv-qserv-utility-2"
-    Hostname 10.71.0.236
-    proxyjump sv-qserv-jump
-    User ubuntu
-    IdentityFile ~/.ssh/keys/gblow-qserv.pem
-    proxyjump sv-qserv-jump
+    proxyjump sv-qserv-oct23-jump

@@ -1,35 +1,45 @@
 jumphost:
   hosts:
-    sv-qserv-jump:
+    sv-qserv-oct23-jump:
 
 boss:
   hosts:
-    sv-qserv-jump:
+    sv-qserv-oct23-jump:
 
 czar:
   hosts:
-    sv-qserv-czar:
+    sv-qserv-oct23-czar:
 
 workers:
   hosts:
-    sv-qserv-worker-1:
-    sv-qserv-worker-2:
-    sv-qserv-worker-3:
-    sv-qserv-worker-4:
-    sv-qserv-worker-5:
+    sv-qserv-oct23-worker-1:
+    sv-qserv-oct23-worker-2:
+    sv-qserv-oct23-worker-3:
+    sv-qserv-oct23-worker-4:
+    sv-qserv-oct23-worker-5:
+    sv-qserv-oct23-worker-6:
+    sv-qserv-oct23-worker-7:
+    sv-qserv-oct23-worker-8:
+    sv-qserv-oct23-worker-9:
+    sv-qserv-oct23-worker-10:
 
 utility_nodes:
   hosts:
-    sv-qserv-utility-1:
-    sv-qserv-utility-2:
+    sv-qserv-oct23-utility-1:
+    sv-qserv-oct23-utility-2:
 
 goons:
   hosts:
-    sv-qserv-czar:
-    sv-qserv-worker-1:
-    sv-qserv-worker-2:
-    sv-qserv-worker-3:
-    sv-qserv-worker-4:
-    sv-qserv-worker-5:
-    sv-qserv-utility-1:
-    sv-qserv-utility-2:
+    sv-qserv-oct23-czar:
+    sv-qserv-oct23-worker-1:
+    sv-qserv-oct23-worker-2:
+    sv-qserv-oct23-worker-3:
+    sv-qserv-oct23-worker-4:
+    sv-qserv-oct23-worker-5:
+    sv-qserv-oct23-worker-6:
+    sv-qserv-oct23-worker-7:
+    sv-qserv-oct23-worker-8:
+    sv-qserv-oct23-worker-9:
+    sv-qserv-oct23-worker-10:
+    sv-qserv-oct23-utility-1:
+    sv-qserv-oct23-utility-2:
