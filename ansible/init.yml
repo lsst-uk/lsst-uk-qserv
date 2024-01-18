@@ -266,10 +266,22 @@
       tags:
         - test2
 
+          #- name: wait 3m
+          #ansible.builtin.wait_for:
+          #timeout: 180
+
+
     - name: apply_kustomization
       command: kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/$RELEASE/manifests/operator.yaml 
       tags:
         - test3
+
+          #- name: wait 3m again
+          #ansible.builtin.wait_for:
+          #timeout: 180
+
+
+
 
     - name: apply manifest
       command: kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
