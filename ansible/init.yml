@@ -1,4 +1,5 @@
 - hosts: goons
+  ignore_errors: yes
   tasks:
 
     - name: create new ext4 primary partition for qserv data
@@ -31,12 +32,14 @@
 
 
 - hosts: all
+  ignore_errors: yes
   roles:
     - mob_init
 
 
 
 - hosts: boss
+  ignore_errors: yes
   roles:
     - kubernetes_boss
   tasks:
@@ -56,6 +59,7 @@
       - ssh-setup
 
 - hosts: goons
+  ignore_errors: yes
   tasks:    
     - name: deploy jump host ssh key
       authorized_key:
@@ -66,10 +70,12 @@
       - ssh-setup
       
   hosts: goons
+  ignore_errors: yes
   roles:
     - kubernetes_goon
 
 - hosts: goons
+  ignore_errors: yes
   tasks:
     - name : set up root qserv-data directory
       file:
@@ -83,6 +89,7 @@
         - qserv
 
 - hosts: goons
+  ignore_errors: yes
   tasks:
     - name : set up qserv-data/default directory
       file:
@@ -96,6 +103,7 @@
         - qserv
 
 - hosts: czar:utility_nodes
+  ignore_errors: yes
   tasks:
     - name: set up ingest directory
       file:
@@ -109,6 +117,7 @@
         - qserv 
 
 - hosts: czar:utility_nodes
+  ignore_errors: yes
   tasks:
     - name: set up replication directory
       file:
@@ -122,6 +131,7 @@
         - qserv 
 
 - hosts: goons
+  ignore_errors: yes
   tasks:
     - name: set up qserv directory
       file:
@@ -135,59 +145,78 @@
         - qserv       
 
 - hosts: jumphost
-  become: yes
+  ignore_errors: yes
+  #become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
+        
   tasks:
-    - name: openshift
-      shell: pip install openshift pyyaml kubernetes 
-      tags:
-        - test5
-
-
-    - name: conf
-      k8s:
-        kubeconfig: ~/.kube/config
-      tags: 
+          #- name: openshift #download openshift 
+      #shell: pip install openshift pyyaml kubernetes 
+      #tags:
+      #  - boss
+    - name: py install
+      become: yes
+      shell: apt install python3-pip -y
+      tags: pip
+          #- name: conf
+          #k8s:
+          #kubeconfig: ~/.kube/config
+          #tags: 
       #- boss
-      #  - test5
+      #- test5
     - name: Install requests python package
+      become: yes
       pip:
         name: requests
       tags: 
         - boss
+    - name: skateful
+      become: yes
+      shell: git clone https://github.com/k8s-school/skateful.git
+      tags:
+        - hi2
     - name: pv_copy
+      become: yes
       ansible.builtin.copy:
-        src: "{{ item }}"
+        src: "~/qserv-test/{{ item }}"
         dest: "/home/ubuntu/skateful/{{ item }}"
         mode: 0644
         owner: root
         group: root
         #overwrite: yes
+        #remote_src: true
       tags: 
         - d_new
         - hi
-         
+      vars:
+        ansible_python_interpreter: "/usr/bin/python3"  
       with_items:
-        - "pvc.sh"
+              #- "pvc.sh"
         - "env.sh"
-          
-    - name: pv_sh
-      kubernetes.core.k8s:
-        state: present
-        src: /home/ubuntu/skateful/out/
+          # - name: install community.kubernetes
+          #shell: ansible-galaxy collection install community.kubernetes
+          #tagsi: 
+          # - d_new
+    - name: pyaml k8s
+      become: yes
+      shell: pip install openshift pyyaml kubernetes
+      tags:
+        - d_new      
+          #- name: pv_sh
+          #kubernetes.core.k8s:
+          #kubeconfig: "/home/ubuntu/.kube/config"
+          #tags:
+          #- d_new1
+          #- name: skate    
+          #kubernetes.core.k8s:
+          #kubeconfig: "/home/ubuntu/.kube/config"
+          #state: present
+          #src: /home/ubuntu/skateful/out/
       #remote_src: true
 
       
       #cmd: pvc.sh
-      tags: 
-        - d_new
-        - boss
-    - name: Sleep for 60 seconds and continue with play
-      ansible.builtin.wait_for:
-        timeout: 60
-      tags: 
-        - d_new
 
     - name: manifest
       become: yes
@@ -197,10 +226,10 @@
 
 
     - name: kubelet
-      become: yes      
-      command: kubectl apply -n default -f /home/ubuntu/skateful/out/
+      command: kubectl apply -n default -f /home/ubuntu/skateful/out/ 
       tags:
-        - test2
+        - test3
+     
 
     - name: wget
       become: yes
@@ -208,7 +237,7 @@
       register: RELEASE
       tags:
         - test2
-         
+
     - name: git
       become: yes
       shell: git clone --depth 1 --single-branch -b "$RELEASE" https://github.com/lsst/qserv-operator
@@ -219,32 +248,33 @@
       become: yes
       shell: cp -r qserv-operator/manifests/gke-qserv-prod/ qserv-operator/manifests/somerville-lsst-qserv
       tags:
-        - test2
+        - test3
 
     - name: base
       become: yes
-      shell: sudo sed -i 's|- ../gke-qserv-dev|- ../base|g' qserv-operator/manifests/somerville-lsst-qserv/kustomization.yaml 
+      shell: sed -i 's|- ../gke-qserv-dev|- ../base|g' qserv-operator/manifests/somerville-lsst-qserv/kustomization.yaml
       tags:
         - test2
 
+    - name: cert
+      command: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
 
-    - name: cert_manager
-      become: yes
-      shell: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
-      tags:
-        - test2
+
 
     - name: assign_util
-      become: yes
-      shell: kubectl label nodes sv-qserv-dev-utility-1 tier=utility
+      command: kubectl label nodes sv-qserv-dev-utility-1 tier=utility --overwrite
       tags:
         - test2
 
     - name: apply_kustomization
-      become: yes
-      shell: cd qserv-operator; kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/$RELEASE/manifests/operator.yaml; kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+      command: kubectl apply -f https://raw.githubusercontent.com/lsst/qserv-operator/$RELEASE/manifests/operator.yaml 
       tags:
-        - test2
+        - test3
+
+    - name: apply manifest
+      command: kubectl apply -k /home/ubuntu/qserv-operator/manifests/somerville-lsst-qserv/
+      tags:
+        - test3      
 
     - name: git lfs
       become: yes
@@ -256,9 +286,10 @@
 
 
 
-          #- name: lfs
-          #become: yes
-          #shell: install git-lfs
-          #tags:
-          #- new
+
+
+
+
+
+
 
